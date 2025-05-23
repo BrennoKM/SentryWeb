@@ -5,20 +5,26 @@ Sistema de monitoramento de serviços com mensagens automáticas via RabbitMQ, u
 ## 📁 Estrutura do Projeto
 
 .
-├── src/                # Código fonte da aplicação
-│   ├── main.py
-│   ├── config.py
-│   ├── monitor/
-│   ├── messaging/
-│   └── utils/
-├── helm/               # Helm Chart do projeto
-│   └── sentryk8s/
+├── helm
+│   └── sentryk8s
+│       ├── charts
 │       ├── Chart.yaml
-│       ├── values.yaml
-│       └── templates/
-├── .github/            # CI com GitHub Actions
-│   └── workflows/
+│       ├── templates
+│       │   ├── deployment.yaml
+│       │   ├── _helpers.tpl
+│       │   ├── hpa.yaml
+│       │   ├── ingress.yaml
+│       │   ├── NOTES.txt
+│       │   ├── serviceaccount.yaml
+│       │   ├── service.yaml
+│       │   └── tests
+│       │       └── test-connection.yaml
+│       └── values.yaml
 ├── README.md
+└── src
+    ├── messaging
+    ├── scheduler
+    └── worker
 
 ## 🚀 Como rodar com Helm (local com Minikube)
 
