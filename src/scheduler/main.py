@@ -15,7 +15,7 @@ def is_task_owned(task_id: str) -> bool:
     return (get_hash(task_id) % TOTAL_SCHEDULERS) == SCHEDULER_ID
 
 def send_task_periodic(task):
-    print(f"[scheduler {SCHEDULER_ID}] Enviando tarefa: {task['task_type']} (task_id={task['task_name']})")
+    print(f"[scheduler {SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
     send_message({
         'task_name': task['task_name'],
         'task_id': task['task_id'],
