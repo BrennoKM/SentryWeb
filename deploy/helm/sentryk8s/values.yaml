@@ -1,0 +1,12 @@
+# sentryk8s
+scheduler:
+  image:
+    repository: brennokm/scheduler
+    tag: latest
+  replicaCount: 2
+
+worker:
+  image:
+    repository: brennokm/worker
+    tag: latest
+  replicaCount: 3
