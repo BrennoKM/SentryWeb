@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sentryk8s
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/brennokm/sentryk8s
+    targetRevision: main
+    path: deploy/helm/sentryk8s
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sentryk8s
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
