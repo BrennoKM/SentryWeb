@@ -7,9 +7,13 @@ on:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
+    - name: Checkout do código
       uses: actions/checkout@v3
+
+    - name: Verificar estrutura de pastas (debug)
+      run: ls -R
 
     - name: Login no Docker Hub
       uses: docker/login-action@v3
@@ -22,11 +26,15 @@ jobs:
       with:
         context: ./src/scheduler
         push: true
-        tags: brennokm/scheduler:latest
+        tags: |
+          brennokm/scheduler:latest
+          brennokm/scheduler:${{ github.sha }}
 
     - name: Build e Push do Worker
       uses: docker/build-push-action@v5
       with:
         context: ./src/worker
         push: true
-        tags: brennokm/worker:latest
+        tags: |
+          brennokm/worker:latest
+          brennokm/worker:${{ github.sha }}
