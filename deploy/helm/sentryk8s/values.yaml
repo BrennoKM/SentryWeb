@@ -19,8 +19,8 @@ worker:
 rabbitmq:
   auth:
     existingSecret: rabbitmq-secrets
-    existingSecretPasswordKey: password
-    existingSecretUsernameKey: username
+    existingSecretUsernameKey: rabbitmq-username
+    existingSecretPasswordKey: rabbitmq-password
     existingSecretErlangKey: rabbitmq-erlang-cookie
     forcePassword: true
   persistence:
