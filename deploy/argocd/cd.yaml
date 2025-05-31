@@ -7,8 +7,7 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: scheduler=brennokm/scheduler,worker=brennokm/worker
     argocd-image-updater.argoproj.io/scheduler.update-strategy: latest
     argocd-image-updater.argoproj.io/worker.update-strategy: latest
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/write-back-target: helm
+    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   project: default
   source:
@@ -16,8 +15,16 @@ spec:
     targetRevision: main
     path: deploy/helm/sentryk8s
     helm:
-      valueFiles:
-        - values.yaml
+      values: |
+        rabbitmq:
+          auth:
+            existingPasswordSecret: rabbitmq-secrets
+            existingPasswordSecretKey: password
+        postgresql:
+          auth:
+            existingSecret: postgres-secrets
+            secretKeys:
+              postgres-password-key: password
   destination:
     server: https://kubernetes.default.svc
     namespace: sentryk8s
@@ -25,3 +32,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
