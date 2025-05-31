@@ -6,6 +6,11 @@ scheduler:
   replicaCount: 2
   service:
     port: 8000
+  env:
+    - name: RABBITMQ_HOST
+      value: "sentryk8s-rabbitmq"
+    - name: POSTGRES_HOST
+      value: "sentryk8s-postgresql"
 
 worker:
   image:
@@ -14,7 +19,11 @@ worker:
   replicaCount: 3
   service:
     port: 8001
-
+  env:
+    - name: RABBITMQ_HOST
+      value: "sentryk8s-rabbitmq"
+    - name: POSTGRES_HOST
+      value: "sentryk8s-postgresql"
 
 rabbitmq:
   auth:
@@ -23,7 +32,7 @@ rabbitmq:
     existingSecretPasswordKey: rabbitmq-password
     existingSecretErlangKey: rabbitmq-erlang-cookie
     forcePassword: true
-  configuration: |
+  configuration: |-
     default_user = ${RABBITMQ_USERNAME}
     default_pass = ${RABBITMQ_PASSWORD}
     loopback_users.${RABBITMQ_USERNAME} = true
@@ -35,13 +44,14 @@ rabbitmq:
     size: 10Gi
   livenessProbe:
     enabled: true
+    initialDelaySeconds: 120
     command:
       - sh
       - -ec
       - 'curl -f --user ${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/virtual-hosts'
-  
   readinessProbe:
     enabled: true
+    initialDelaySeconds: 30
     command:
       - sh
       - -ec
@@ -57,3 +67,7 @@ postgresql:
     persistence:
       enabled: true
       size: 10Gi
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
