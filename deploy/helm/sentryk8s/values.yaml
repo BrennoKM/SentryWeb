@@ -23,6 +23,13 @@ rabbitmq:
     existingSecretPasswordKey: rabbitmq-password
     existingSecretErlangKey: rabbitmq-erlang-cookie
     forcePassword: true
+  configuration: |
+    default_user = ${RABBITMQ_USERNAME}
+    default_pass = ${RABBITMQ_PASSWORD}
+    loopback_users.${RABBITMQ_USERNAME} = true
+    default_permissions.configure = .*
+    default_permissions.read = .*
+    default_permissions.write = .*
   persistence:
     enabled: true
     size: 10Gi
