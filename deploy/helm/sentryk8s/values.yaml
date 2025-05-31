@@ -18,13 +18,27 @@ worker:
 
 rabbitmq:
   auth:
-    existingPasswordSecret: rabbitmq-secrets
-    existingPasswordSecretKey: password
-    existingUsernameSecret: rabbitmq-secrets
-    existingUsernameSecretKey: username
+    existingSecret: rabbitmq-secrets
+    existingSecretPasswordKey: password
+    existingSecretUsernameKey: username
+    existingSecretErlangKey: rabbitmq-erlang-cookie
+    forcePassword: true
   persistence:
     enabled: true
     size: 10Gi
+  livenessProbe:
+    enabled: true
+    command:
+      - sh
+      - -ec
+      - 'curl -f --user ${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/virtual-hosts'
+  
+  readinessProbe:
+    enabled: true
+    command:
+      - sh
+      - -ec
+      - 'curl -f --user ${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/local-alarms'
 
 postgresql:
   auth:
