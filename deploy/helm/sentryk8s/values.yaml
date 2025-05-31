@@ -4,9 +4,35 @@ scheduler:
     repository: brennokm/scheduler
     tag: latest
   replicaCount: 2
+  service:
+    port: 8000
 
 worker:
   image:
     repository: brennokm/worker
     tag: latest
   replicaCount: 3
+  service:
+    port: 8001
+
+
+rabbitmq:
+  auth:
+    existingPasswordSecret: rabbitmq-secrets
+    existingPasswordSecretKey: password
+    existingUsernameSecret: rabbitmq-secrets
+    existingUsernameSecretKey: username
+  persistence:
+    enabled: true
+    size: 10Gi
+
+postgresql:
+  auth:
+    existingSecret: postgres-secrets
+    secretKeys:
+      postgres-password-key: password
+      username-key: username
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi

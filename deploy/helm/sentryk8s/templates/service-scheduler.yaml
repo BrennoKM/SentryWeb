@@ -8,5 +8,5 @@ spec:
     app: scheduler
   ports:
     - protocol: TCP
-      port: 8000
-      targetPort: 8000
+      port: {{ .Values.scheduler.service.port }}
+      targetPort: {{ .Values.scheduler.service.port }}

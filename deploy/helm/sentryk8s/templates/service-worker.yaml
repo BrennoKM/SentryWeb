@@ -7,6 +7,6 @@ spec:
     app: worker
   ports:
     - protocol: TCP
-      port: 8001
-      targetPort: 8001
+      port: {{ .Values.worker.service.port }}
+      targetPort: {{ .Values.worker.service.port }}
   type: ClusterIP
