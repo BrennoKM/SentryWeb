@@ -18,8 +18,10 @@ spec:
       values: |
         rabbitmq:
           auth:
-            existingPasswordSecret: rabbitmq-secrets
-            existingPasswordSecretKey: password
+            existingSecret: rabbitmq-secrets  # Corrigido para match com values.yaml
+            existingUsernameKey: rabbitmq-username
+            existingPasswordKey: rabbitmq-password
+            existingErlangCookieKey: rabbitmq-erlang-cookie
         postgresql:
           auth:
             existingSecret: postgres-secrets

@@ -6,11 +6,6 @@ scheduler:
   replicaCount: 2
   service:
     port: 8000
-  env:
-    - name: RABBITMQ_HOST
-      value: "sentryk8s-rabbitmq"
-    - name: POSTGRES_HOST
-      value: "sentryk8s-postgresql"
 
 worker:
   image:
@@ -19,23 +14,29 @@ worker:
   replicaCount: 3
   service:
     port: 8001
-  env:
-    - name: RABBITMQ_HOST
-      value: "sentryk8s-rabbitmq"
-    - name: POSTGRES_HOST
-      value: "sentryk8s-postgresql"
 
 rabbitmq:
   auth:
+    username: admin
     existingSecret: rabbitmq-secrets
-    existingSecretUsernameKey: rabbitmq-username
-    existingSecretPasswordKey: rabbitmq-password
-    existingSecretErlangKey: rabbitmq-erlang-cookie
-    forcePassword: true
+    existingUsernameKey: rabbitmq-username
+    existingPasswordKey: rabbitmq-password
+    existingErlangCookieKey: rabbitmq-erlang-cookie
+  extraEnvVars:
+  - name: RABBITMQ_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: rabbitmq-secrets
+        key: rabbitmq-username
+  - name: RABBITMQ_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: rabbitmq-secrets
+        key: rabbitmq-password
   configuration: |-
     default_user = ${RABBITMQ_USERNAME}
     default_pass = ${RABBITMQ_PASSWORD}
-    loopback_users.${RABBITMQ_USERNAME} = true
+    loopback_users.admin = false
     default_permissions.configure = .*
     default_permissions.read = .*
     default_permissions.write = .*
@@ -48,14 +49,14 @@ rabbitmq:
     command:
       - sh
       - -ec
-      - 'curl -f --user ${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/virtual-hosts'
+      - 'curl -f --user admin:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/virtual-hosts'
   readinessProbe:
     enabled: true
     initialDelaySeconds: 30
     command:
       - sh
       - -ec
-      - 'curl -f --user ${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/local-alarms'
+      - 'curl -f --user admin:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/local-alarms'
 
 postgresql:
   auth:
