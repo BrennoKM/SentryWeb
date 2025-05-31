@@ -3,6 +3,12 @@ kind: Application
 metadata:
   name: sentryk8s
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: scheduler=brennokm/scheduler,worker=brennokm/worker
+    argocd-image-updater.argoproj.io/scheduler.update-strategy: latest
+    argocd-image-updater.argoproj.io/worker.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-target: helm
 spec:
   project: default
   source:
