@@ -1,8 +1,6 @@
-import json
-import os
 import threading
 import hashlib
-from datetime import datetime, timezone
+from utils.log import log
 from db.tasks import get_all_tasks
 from messaging.producer import send_message
 
@@ -16,7 +14,7 @@ def is_task_owned(task_id: str) -> bool:
     return (get_hash(task_id) % TOTAL_SCHEDULERS) == SCHEDULER_ID
 
 def send_task_periodic(task):
-    print(f"[scheduler {SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
+    log(f"[scheduler {SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
     send_message({
         'task_name': task['task_name'],
         'task_id': task['task_id'],
@@ -34,7 +32,7 @@ def start_scheduler():
     tasks = get_all_tasks()
     my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
 
-    print(f"[scheduler {SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
+    log(f"[scheduler {SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
 
     # Agenda disparo inicial imediato para cada tarefa
     for task in my_tasks:
