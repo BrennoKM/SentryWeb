@@ -34,7 +34,7 @@ rabbitmq:
         name: rabbitmq-secrets
         key: rabbitmq-password
   configuration: |-
-    default_user = ${RABBITMQ_USERNAME}
+    default_user = admin
     default_pass = ${RABBITMQ_PASSWORD}
     loopback_users.admin = false
     default_permissions.configure = .*
