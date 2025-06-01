@@ -6,6 +6,9 @@ from utils.log import log
 def process_task(task):
     log("[worker]    ========================================================================")
     log(f"[worker]    Executando tarefa: {task['task_name']}")
+    log(f"[worker]    Tipo: {task['task_type']}")
+    log(f"[worker]    ID (uuid): {task['task_id']}")
+    log(f"[worker]    ID (db): {task['id']}")
     log(f"[worker]    Payload: {task['payload']}")
     result = check_url(task['payload']['url'])
     log(f"[worker]    Resultado: {result}")
