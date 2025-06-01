@@ -17,6 +17,9 @@ spec:
         image: "{{ .Values.scheduler.image.repository }}:{{ .Values.scheduler.image.tag }}"
         imagePullPolicy: {{ .Values.scheduler.image.pullPolicy }}
         env:
+        - name: TOTAL_SCHEDULERS
+          value: "{{ .Values.scheduler.replicaCount }}"
+
         - name: POSTGRES_HOST
           value: sentryk8s-postgresql
         - name: POSTGRES_USER
