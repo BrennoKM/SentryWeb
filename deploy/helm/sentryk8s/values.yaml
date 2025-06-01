@@ -3,7 +3,6 @@ scheduler:
   image:
     repository: brennokm/scheduler
     tag: latest
-    imagePullPolicy: Always
   replicaCount: 2
   service:
     port: 8000
@@ -12,7 +11,6 @@ worker:
   image:
     repository: brennokm/worker
     tag: latest
-    imagePullPolicy: Always
   replicaCount: 3
   service:
     port: 8001
@@ -46,14 +44,14 @@ rabbitmq:
     enabled: true
     size: 10Gi
   livenessProbe:
-    enabled: true
+    enabled: false # temporariamente desativado
     initialDelaySeconds: 120
     command:
       - sh
       - -ec
       - 'curl -f --user admin:${RABBITMQ_PASSWORD} 127.0.0.1:15672/api/health/checks/virtual-hosts'
   readinessProbe:
-    enabled: true
+    enabled: false # temporariamente desativado
     initialDelaySeconds: 30
     command:
       - sh
