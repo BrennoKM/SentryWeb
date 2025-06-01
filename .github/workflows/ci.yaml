@@ -27,7 +27,8 @@ jobs:
     - name: Build e Push do Scheduler
       uses: docker/build-push-action@v5
       with:
-        context: ./src/scheduler
+        context: ./src
+        file: ./src/scheduler/Dockerfile
         push: true
         tags: |
           brennokm/scheduler:latest
@@ -35,11 +36,12 @@ jobs:
       
     - name: Verificar estrutura do worker
       run: ls -la src/worker/
-      
+
     - name: Build e Push do Worker
       uses: docker/build-push-action@v5
       with:
-        context: ./src/worker
+        context: ./src
+        file: ./src/worker/Dockerfile
         push: true
         tags: |
           brennokm/worker:latest
