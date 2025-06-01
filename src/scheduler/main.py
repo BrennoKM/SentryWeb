@@ -22,7 +22,7 @@ def is_task_owned(task_id: str) -> bool:
 
 def send_task_periodic(task):
     try:
-        log(f"[scheduler {SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
+        log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
         send_message({
             'task_name': task['task_name'],
             'task_id': task['task_id'],
@@ -30,7 +30,7 @@ def send_task_periodic(task):
             'payload': task['payload'],
         }, queue='tasks')
     except Exception as e:
-        log(f"[scheduler {SCHEDULER_ID}] ERRO ao enviar tarefa: {e}")
+        log(f"[scheduler-{SCHEDULER_ID}] ERRO ao enviar tarefa: {e}")
     finally:
         # Agenda o próximo disparo mesmo em caso de erro
         interval = task['interval_seconds']
@@ -42,7 +42,7 @@ def start_scheduler():
     tasks = get_all_tasks()
     my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
 
-    log(f"[scheduler {SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
+    log(f"[scheduler-{SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
 
     # Agenda disparo inicial imediato para cada tarefa
     for task in my_tasks:

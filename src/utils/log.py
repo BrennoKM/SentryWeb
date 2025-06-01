@@ -1,4 +1,6 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 def log(msg):
-    print(f"[{datetime.now().strftime('%d-%m-%Y %H:%M:%S')}] {msg}")
+    now = datetime.now(ZoneInfo("America/Sao_Paulo"))
+    print(f"[{now.strftime('%Y-%m-%d %H:%M:%S')}] {msg}")

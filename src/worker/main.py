@@ -4,7 +4,7 @@ from worker.monitor.url_checker import check_url
 from utils.log import log
 
 def process_task(task):
-    log("[worker]    ===================================================")
+    log("[worker]    ========================================================================")
     log(f"[worker]    Executando tarefa: {task['task_name']}")
     log(f"[worker]    Payload: {task['payload']}")
     result = check_url(task['payload']['url'])
