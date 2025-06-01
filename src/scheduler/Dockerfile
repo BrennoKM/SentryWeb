@@ -7,5 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+ENV PYTHONPATH=/app
 WORKDIR /app/scheduler
 CMD ["python", "main.py"]
