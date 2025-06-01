@@ -15,10 +15,8 @@ def callback(ch, method, properties, body):
     try:
         task = json.loads(body)
         process_task(task)
-        ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
         log(f"[worker] Erro ao processar tarefa: {e}")
-        ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 if __name__ == "__main__":
     start_consumer(callback, queue='tasks')
