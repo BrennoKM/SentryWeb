@@ -1,6 +1,7 @@
 import pika
 import json
 import time
+from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 from worker.monitor.url_checker import check_url
 
 def process_task(task):
@@ -21,7 +22,12 @@ def callback(ch, method, properties, body):
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 def start_worker():
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host=RABBITMQ_HOST,
+            credentials=pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
+        )
+    )
     channel = connection.channel()
     channel.queue_declare(queue='tasks', durable=True)
     channel.basic_qos(prefetch_count=1)
