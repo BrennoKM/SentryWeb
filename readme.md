@@ -4,27 +4,32 @@ Sistema de monitoramento de serviços com mensagens automáticas via RabbitMQ, u
 
 ## 📁 Estrutura do Projeto
 
-.
-├── helm
-│   └── sentryk8s
-│       ├── charts
-│       ├── Chart.yaml
-│       ├── templates
-│       │   ├── deployment.yaml
-│       │   ├── _helpers.tpl
-│       │   ├── hpa.yaml
-│       │   ├── ingress.yaml
-│       │   ├── NOTES.txt
-│       │   ├── serviceaccount.yaml
-│       │   ├── service.yaml
-│       │   └── tests
-│       │       └── test-connection.yaml
-│       └── values.yaml
-├── README.md
-└── src
-    ├── messaging
-    ├── scheduler
-    └── worker
+.<br>
+├── deploy<br>
+│   ├── argocd<br>
+│   │   ├── cd.yaml<br>
+│   │   ├── image-updater-rbac.yaml<br>
+│   │   └── values.yaml<br>
+│   └── helm<br>
+│       └── sentryk8s<br>
+│           ├── Chart.lock<br>
+│           ├── charts<br>
+│           │   ├── postgresql-12.1.0.tgz<br>
+│           │   └── rabbitmq-12.0.0.tgz<br>
+│           ├── Chart.yaml<br>
+│           ├── templates<br>
+│           │   ├── deployment-worker.yaml<br>
+│           │   ├── _helpers.tpl<br>
+│           │   ├── _NOTES.txt<br>
+│           │   ├── service-scheduler.yaml<br>
+│           │   ├── service-worker.yaml<br>
+│           │   ├── statefulset-scheduler.yaml<br>
+│           │   └── tests<br>
+│           └── values.yaml<br>
+├── imagens<br>
+│   └── arquitetura.png<br>
+├── readme.md<br>
+└── src<br>
 
 ## 🚀 Como rodar com Helm (local com Minikube)
 
@@ -45,12 +50,29 @@ helm upgrade sentryk8s ./helm/sentryk8s
 
 ## 📦 Estrutura da Aplicação (src/)
 
-src/
-├── main.py             # Entrada principal
-├── config.py           # Configurações
-├── monitor/            # Módulos de monitoramento
-├── messaging/          # Emissor de mensagens
-└── utils/              # Funções auxiliares
+./src<br>
+├── db<br>
+│   ├── database.py<br>
+│   └── tasks.py<br>
+├── messaging<br>
+│   ├── consumer.py<br>
+│   ├── emitter.py<br>
+│   ├── producer.py<br>
+├── rabbitmq<br>
+│   └── Dockerfile<br>
+├── scheduler<br>
+│   ├── Dockerfile<br>
+│   ├── main.py<br>
+│   └── requirements.txt<br>
+├── scripts<br>
+│   ├── insert_task.py<br>
+│   ├── resetdb.sql<br>
+│   └── test_hash.py<br>
+└── worker<br>
+    ├── Dockerfile<br>
+    ├── main.py<br>
+    ├── monitor<br>
+    └── requirements.txt<br>
 
 ## 📌 Objetivo
 
