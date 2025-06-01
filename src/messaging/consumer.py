@@ -14,7 +14,7 @@ def start_consumer(callback, queue='tasks'):
 
     def on_message(ch, method, properties, body):
         data = json.loads(body)
-        callback(data)
+        callback(ch, method, properties, body)
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
     channel.basic_qos(prefetch_count=1)
