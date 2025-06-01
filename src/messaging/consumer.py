@@ -1,8 +1,14 @@
 import pika
 import json
+from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 
 def start_consumer(callback, queue='tasks'):
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host=RABBITMQ_HOST,
+            credentials=pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
+        )
+    )
     channel = connection.channel()
     channel.queue_declare(queue=queue, durable=True)
 

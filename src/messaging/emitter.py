@@ -1,8 +1,14 @@
 import pika
 import json
+from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 
 def send_message(data, queue='tasks', delay=None):
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host=RABBITMQ_HOST,
+            credentials=pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
+        )
+    )
     channel = connection.channel()
 
     args = {}
