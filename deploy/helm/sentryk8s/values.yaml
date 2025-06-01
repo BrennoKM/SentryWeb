@@ -3,6 +3,7 @@ scheduler:
   image:
     repository: brennokm/scheduler
     tag: latest
+    imagePullPolicy: Always
   replicaCount: 2
   service:
     port: 8000
@@ -11,6 +12,7 @@ worker:
   image:
     repository: brennokm/worker
     tag: latest
+    imagePullPolicy: Always
   replicaCount: 3
   service:
     port: 8001
