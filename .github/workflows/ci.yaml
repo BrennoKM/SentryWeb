@@ -21,6 +21,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Verificar estrutura do scheduler
+      run: ls -la src/scheduler/
+
     - name: Build e Push do Scheduler
       uses: docker/build-push-action@v5
       with:
@@ -29,7 +32,10 @@ jobs:
         tags: |
           brennokm/scheduler:latest
           brennokm/scheduler:${{ github.sha }}
-
+      
+    - name: Verificar estrutura do worker
+      run: ls -la src/worker/
+      
     - name: Build e Push do Worker
       uses: docker/build-push-action@v5
       with:
