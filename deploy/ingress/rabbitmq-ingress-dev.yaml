@@ -1,19 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: rabbitmq-ui
-  namespace: sentryk8s
+  name: rabbitmq-ui-dev
+  namespace: sentryk8s-dev
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: rabbitmq.local.nip.io
+    - host: rabbitmq-dev.local.nip.io
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: sentryk8s-rabbitmq
+                name: sentryk8s-dev-rabbitmq
                 port:
                   number: 15672

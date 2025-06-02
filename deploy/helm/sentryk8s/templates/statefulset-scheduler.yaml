@@ -21,7 +21,7 @@ spec:
           value: "{{ .Values.scheduler.replicaCount }}"
 
         - name: POSTGRES_HOST
-          value: sentryk8s-postgresql
+          value: {{ .Values.global.postgresHost | quote }}
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
@@ -35,7 +35,7 @@ spec:
         - name: POSTGRES_DB
           value: sentry_db
         - name: RABBITMQ_HOST
-          value: sentryk8s-rabbitmq
+          value: {{ .Values.global.rabbitmqHost | quote }}
         - name: RABBITMQ_USER
           valueFrom:
             secretKeyRef:

@@ -1,4 +1,8 @@
 # sentryk8s
+global:
+  postgresHost: sentryk8s-postgresql
+  rabbitmqHost: sentryk8s-rabbitmq
+  
 scheduler:
   image:
     repository: brennokm/scheduler

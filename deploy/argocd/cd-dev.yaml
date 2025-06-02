@@ -18,6 +18,9 @@ spec:
     path: deploy/helm/sentryk8s
     helm:
       values: |
+        global:
+          postgresHost: sentryk8s-dev-postgresql
+          rabbitmqHost: sentryk8s-dev-rabbitmq
         scheduler:
           image:
             tag: dev-latest
