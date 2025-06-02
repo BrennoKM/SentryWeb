@@ -5,6 +5,8 @@ metadata:
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/image-list: scheduler=brennokm/scheduler,worker=brennokm/worker
+    argocd-image-updater.argoproj.io/worker.allow-tags: ^main-latest$
+    argocd-image-updater.argoproj.io/scheduler.allow-tags: ^main-latest$
     argocd-image-updater.argoproj.io/scheduler.update-strategy: latest
     argocd-image-updater.argoproj.io/worker.update-strategy: latest
     argocd-image-updater.argoproj.io/write-back-method: argocd
@@ -14,19 +16,6 @@ spec:
     repoURL: https://github.com/brennokm/sentryk8s
     targetRevision: main
     path: deploy/helm/sentryk8s
-    helm:
-      values: |
-        rabbitmq:
-          auth:
-            existingSecret: rabbitmq-secrets  # Corrigido para match com values.yaml
-            existingUsernameKey: rabbitmq-username
-            existingPasswordKey: rabbitmq-password
-            existingErlangCookieKey: rabbitmq-erlang-cookie
-        postgresql:
-          auth:
-            existingSecret: postgres-secrets
-            secretKeys:
-              postgres-password-key: password
   destination:
     server: https://kubernetes.default.svc
     namespace: sentryk8s
