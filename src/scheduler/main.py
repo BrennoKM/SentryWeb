@@ -25,8 +25,9 @@ def send_task_periodic(task):
         log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
         send_message({
             'task_name': task['task_name'],
+            'id': task['id'],
             'task_id': task['task_id'],
-            'type': task['task_type'],
+            'task_type': task['task_type'],
             'payload': task['payload'],
         }, queue='tasks')
     except Exception as e:
