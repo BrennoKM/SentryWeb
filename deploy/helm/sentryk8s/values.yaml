@@ -2,7 +2,7 @@
 scheduler:
   image:
     repository: brennokm/scheduler
-    tag: latest
+    tag: main-latest
     imagePullPolicy: Always
   replicaCount: 2
   service:
@@ -11,7 +11,7 @@ scheduler:
 worker:
   image:
     repository: brennokm/worker
-    tag: latest
+    tag: main-latest
     imagePullPolicy: Always
   replicaCount: 3
   service:

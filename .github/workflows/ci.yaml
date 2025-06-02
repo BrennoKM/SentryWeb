@@ -2,11 +2,12 @@ name: Build e Push Docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - '**'
     paths:
       - 'src/**'
       - '.github/workflows/ci.yaml'
-      
+
 jobs:
   docker-build:
     runs-on: ubuntu-latest
@@ -34,7 +35,7 @@ jobs:
         file: ./src/scheduler/Dockerfile
         push: true
         tags: |
-          brennokm/scheduler:latest
+          brennokm/scheduler:${{ github.ref_name }}-latest
           brennokm/scheduler:${{ github.sha }}
       
     - name: Verificar estrutura do worker
@@ -47,5 +48,5 @@ jobs:
         file: ./src/worker/Dockerfile
         push: true
         tags: |
-          brennokm/worker:latest
+          brennokm/worker:${{ github.ref_name }}-latest
           brennokm/worker:${{ github.sha }}
