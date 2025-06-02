@@ -3,7 +3,10 @@ name: Build e Push Docker
 on:
   push:
     branches: [ "main" ]
-
+    paths:
+      - 'src/**'
+      - '.github/workflows/ci.yaml'
+      
 jobs:
   docker-build:
     runs-on: ubuntu-latest
