@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sentryk8s-dev
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: scheduler=brennokm/scheduler,worker=brennokm/worker
+    argocd-image-updater.argoproj.io/worker.allow-tags: ^dev-latest$
+    argocd-image-updater.argoproj.io/scheduler.allow-tags: ^dev-latest$
+    argocd-image-updater.argoproj.io/scheduler.update-strategy: latest
+    argocd-image-updater.argoproj.io/worker.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/brennokm/sentryk8s
+    targetRevision: dev
+    path: deploy/helm/sentryk8s
+    helm:
+      values: |
+        scheduler:
+          image:
+            tag: dev-latest
+        worker:
+          image:
+            tag: dev-latest
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sentryk8s-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
