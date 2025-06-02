@@ -2,7 +2,7 @@
 global:
   postgresHost: sentryk8s-postgresql
   rabbitmqHost: sentryk8s-rabbitmq
-  
+
 scheduler:
   image:
     repository: brennokm/scheduler
@@ -66,11 +66,18 @@ rabbitmq:
 
 postgresql:
   auth:
+    enablePostgresUser: false
     existingSecret: postgres-secrets
     secretKeys:
-      postgres-password-key: password
-      username-key: username
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+      usernameKey: username
+    username: "admin"
+    password: ""  # Desabilita a senha padrão
+    database: "sentry_db"
   primary:
+    initdb:
+      scriptsConfigMap: sentryk8s-initdb
     persistence:
       enabled: true
       size: 10Gi
