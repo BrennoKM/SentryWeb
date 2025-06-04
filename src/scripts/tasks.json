@@ -1,0 +1,274 @@
+{
+    "tasks": [
+        {
+            "task_name": "check_example",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://example.com",
+                "method": "GET"
+            },
+            "interval_seconds": 60
+        },
+        {
+            "task_name": "check_google",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://google.com",
+                "method": "GET"
+            },
+            "interval_seconds": 60
+        },
+        {
+            "task_name": "check_github",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://github.com",
+                "method": "GET"
+            },
+            "interval_seconds": 120
+        },
+        {
+            "task_name": "check_stackoverflow",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://stackoverflow.com",
+                "method": "GET"
+            },
+            "interval_seconds": 180
+        },
+        {
+            "task_name": "check_microsoft",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://microsoft.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_apple",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://apple.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_amazon",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://amazon.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_netflix",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://netflix.com",
+                "method": "GET"
+            },
+            "interval_seconds": 600
+        },
+        {
+            "task_name": "check_twitter",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://twitter.com",
+                "method": "GET"
+            },
+            "interval_seconds": 180
+        },
+        {
+            "task_name": "check_linkedin",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://linkedin.com",
+                "method": "GET"
+            },
+            "interval_seconds": 600
+        },
+        {
+            "task_name": "check_youtube",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://youtube.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_reddit",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://reddit.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_instagram",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://instagram.com",
+                "method": "GET"
+            },
+            "interval_seconds": 600
+        },
+        {
+            "task_name": "check_wikipedia",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://wikipedia.org",
+                "method": "GET"
+            },
+            "interval_seconds": 1200
+        },
+        {
+            "task_name": "check_cloudflare",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://cloudflare.com",
+                "method": "GET"
+            },
+            "interval_seconds": 900
+        },
+        {
+            "task_name": "check_digitalocean",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://digitalocean.com",
+                "method": "GET"
+            },
+            "interval_seconds": 900
+        },
+        {
+            "task_name": "check_aws_status",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://status.aws.amazon.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_azure_status",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://status.azure.com",
+                "method": "GET"
+            },
+            "interval_seconds": 300
+        },
+        {
+            "task_name": "check_nginx",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nginx.org",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_nodejs",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nodejs.org",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_python",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://python.org",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_docker",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://docker.com",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_kubernetes",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://kubernetes.io",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_grafana",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://grafana.com",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_prometheus",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://prometheus.io",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_elastic",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://elastic.co",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_mongodb",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mongodb.com",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_postgresql",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://postgresql.org",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_mysql",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mysql.com",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        },
+        {
+            "task_name": "check_redis",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://redis.io",
+                "method": "GET"
+            },
+            "interval_seconds": 1800
+        }
+    ]
+}
