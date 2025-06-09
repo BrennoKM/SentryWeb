@@ -5,7 +5,8 @@ from utils.log import log
 
 def process_task(task):
     log("[worker]    ========================================================================")
-    log(f"[worker]    Executando tarefa: {task['task_name']}")
+    log("[worker]    Executando tarefa")
+    log(f"[worker]    Nome: {task['task_name']}")
     log(f"[worker]    Tipo: {task['task_type']}")
     log(f"[worker]    ID (uuid): {task['task_id']}")
     log(f"[worker]    ID (db): {task['id']}")

@@ -21,6 +21,7 @@ spec:
         global:
           postgresHost: sentryk8s-dev-postgresql
           rabbitmqHost: sentryk8s-dev-rabbitmq
+          namespace: sentryk8s-dev
         scheduler:
           image:
             tag: dev-latest

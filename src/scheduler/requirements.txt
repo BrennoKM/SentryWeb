@@ -1,3 +1,4 @@
 pika
 requests
 psycopg2-binary
+kubernetes

@@ -2,6 +2,7 @@
 global:
   postgresHost: sentryk8s-postgresql
   rabbitmqHost: sentryk8s-rabbitmq
+  namespace: sentryk8s
 
 scheduler:
   image:

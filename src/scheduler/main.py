@@ -3,6 +3,7 @@ import hashlib
 from utils.log import log
 from db.tasks import get_all_tasks
 from messaging.producer import send_message
+from k8s.discovery import get_total_schedulers
 import os
 
 hostname = os.environ.get("HOSTNAME", "scheduler-0")
@@ -11,8 +12,19 @@ try:
 except Exception:
     SCHEDULER_ID = 0  # fallback
 
-TOTAL_SCHEDULERS = int(os.environ.get("TOTAL_SCHEDULERS", "2"))  # Via env no YAML
+TOTAL_SCHEDULERS = int(os.environ.get("TOTAL_SCHEDULERS", "2"))  # Via env no YAML e depois é atualizado pelo discovery
 
+def update_scheduler_count():
+    global TOTAL_SCHEDULERS
+    try:
+        new_total = get_total_schedulers()
+        if new_total != TOTAL_SCHEDULERS:
+            log(f"[{hostname}] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} → {new_total}")
+            TOTAL_SCHEDULERS = new_total
+    except Exception as e:
+        log(f"[{hostname}] Erro ao consultar schedulers ativos: {e}")
+    finally:
+        threading.Timer(30, update_scheduler_count).start()
 
 def get_hash(value: str) -> int:
     return int(hashlib.sha256(value.encode()).hexdigest(), 16)
@@ -42,7 +54,7 @@ def send_task_periodic(task):
 def start_scheduler():
     tasks = get_all_tasks()
     my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
-
+    log(f"[scheduler-{SCHEDULER_ID}] TOTAL_SCHEDULERS atual: {TOTAL_SCHEDULERS}")
     log(f"[scheduler-{SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
 
     # Agenda disparo inicial imediato para cada tarefa
@@ -50,6 +62,7 @@ def start_scheduler():
         send_task_periodic(task)
 
 if __name__ == "__main__":
-    start_scheduler()
+    update_scheduler_count()
+    threading.Timer(1, start_scheduler).start() 
     # Mantém o programa vivo para os timers funcionarem
     threading.Event().wait()
