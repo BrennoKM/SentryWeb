@@ -1,6 +1,7 @@
 import pika
 import json
 import time
+from utils.log import log
 from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 
 def send_message(data, queue='tasks', max_retries=5):
@@ -24,8 +25,8 @@ def send_message(data, queue='tasks', max_retries=5):
             connection.close()
             return
         except Exception as e:
-            print(f"[producer] Erro ao enviar mensagem (tentativa {attempt}): {e}")
+            log(f"[producer] Erro ao enviar mensagem, dados: {data} (tentativa {attempt}): {e}")
             if attempt == max_retries:
                 raise
             time.sleep(delay)
-            delay *= 2 
+            delay *= 2  
