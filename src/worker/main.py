@@ -4,16 +4,26 @@ from worker.monitor.url_checker import check_url
 from utils.log import log
 
 def process_task(task):
-    log("[worker]    ========================================================================")
-    log("[worker]    Executando tarefa")
-    log(f"[worker]    Nome: {task['task_name']}")
-    log(f"[worker]    Tipo: {task['task_type']}")
-    log(f"[worker]    ID (uuid): {task['task_id']}")
-    log(f"[worker]    ID (db): {task['id']}")
-    log(f"[worker]    Payload: {task['payload']}")
     result = check_url(task['payload']['url'])
-    log(f"[worker]    Resultado: {result}")
-    log(f"[worker]    Finalizou tarefa: {task['task_name']}")
+    # log("[worker]    ========================================================================")
+    # log("[worker]    Executando tarefa")
+    # log(f"[worker]    Nome: {task['task_name']}")
+    # log(f"[worker]    Tipo: {task['task_type']}")
+    # log(f"[worker]    ID (uuid): {task['task_id']}")
+    # log(f"[worker]    ID (db): {task['id']}")
+    # log(f"[worker]    Payload: {task['payload']}")
+    # log(f"[worker]    Resultado: {result}")
+    # log(f"[worker]    Finalizou tarefa: {task['task_name']}")
+    log(
+        "[worker]    ==================================== Tarefa Recebida ====================================\n"
+        f"\tNome: {task['task_name']}\n"
+        f"\tTipo: {task['task_type']}\n"
+        f"\tID (uuid): {task['task_id']}\n"
+        f"\tID (db): {task['id']}\n"
+        f"\tPayload: {task['payload']}\n"
+        f"\tResultado: {result}\n"
+        "\tFinalizou tarefa: {task['task_name']}\n"
+    )
 
 def callback(ch, method, properties, body):
     try:
