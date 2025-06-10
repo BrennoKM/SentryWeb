@@ -14,6 +14,8 @@ except Exception:
 
 TOTAL_SCHEDULERS = int(os.environ.get("TOTAL_SCHEDULERS", "2"))  # Via env no YAML e depois é atualizado pelo discovery
 
+active_tasks = {} # esse dicionário é usado para armazenar as tarefas ativas, para poder gerenciar o envio periódico
+
 def update_scheduler_count():
     global TOTAL_SCHEDULERS
     try:
@@ -45,11 +47,13 @@ def send_task_periodic(task):
     except Exception as e:
         log(f"[scheduler-{SCHEDULER_ID}] ERRO ao enviar tarefa: {e}")
     finally:
-        # Agenda o próximo disparo mesmo em caso de erro
         interval = task['interval_seconds']
+        tid = task['task_id']
         timer = threading.Timer(interval, send_task_periodic, args=(task,))
         timer.daemon = True
         timer.start()
+        active_tasks[tid] = timer  # Armazena o timer ativo para essa tarefa
+
 
 def start_scheduler():
     tasks = get_all_tasks()
