@@ -4,6 +4,7 @@ from utils.log import log
 from db.tasks import get_all_tasks
 from messaging.producer import send_message
 from k8s.discovery import get_total_schedulers
+from messaging.consumer import start_consumer
 import os
 
 hostname = os.environ.get("HOSTNAME", "scheduler-0")
@@ -19,7 +20,7 @@ active_tasks = {} # esse dicionário é usado para armazenar as tarefas ativas, 
 
 def sync_tasks():
     tasks = get_all_tasks()
-    my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
+    my_tasks = [t for t in tasks if is_task_owned(t['task_uuid'])]
 
     clear_unowned_tasks(my_tasks)
     add_new_tasks(my_tasks)
@@ -27,7 +28,7 @@ def sync_tasks():
     log(f"[scheduler-{SCHEDULER_ID}] Agora gerenciando {len(my_tasks)} tarefas")
 
 def clear_unowned_tasks(new_tasks):
-    new_ids = {t['task_id'] for t in new_tasks}
+    new_ids = {t['task_uuid'] for t in new_tasks}
     old_ids = set(active_tasks.keys())
 
     to_remove = old_ids - new_ids
@@ -39,7 +40,7 @@ def clear_unowned_tasks(new_tasks):
 
 def add_new_tasks(new_tasks):
     for task in new_tasks:
-        tid = task['task_id']
+        tid = task['task_uuid']
         if tid not in active_tasks:
             log(f"[scheduler-{SCHEDULER_ID}] Nova tarefa agendada: {tid}")
             send_task_periodic(task)
@@ -60,22 +61,21 @@ def update_scheduler_count():
 def get_hash(value: str) -> int:
     return int(hashlib.sha256(value.encode()).hexdigest(), 16)
 
-def is_task_owned(task_id: str) -> bool:
-    return (get_hash(task_id) % TOTAL_SCHEDULERS) == SCHEDULER_ID
+def is_task_owned(task_uuid: str) -> bool:
+    return (get_hash(task_uuid) % TOTAL_SCHEDULERS) == SCHEDULER_ID
 
 def send_task_periodic(task):
-    tid = task['task_id']
+    tid = task['task_uuid']
     if not is_task_owned(tid):
         log(f"[scheduler-{SCHEDULER_ID}] Ignorando envio da tarefa {tid} — ownership mudou.")
         active_tasks.pop(tid, None)  # remove do dicionário
         return
-
     try:
-        log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
+        log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, uuid: {task['task_uuid']} (id (db)={task['id']})")
         send_message({
             'task_name': task['task_name'],
             'id': task['id'],
-            'task_id': task['task_id'],
+            'task_uuid': task['task_uuid'],
             'task_type': task['task_type'],
             'payload': task['payload'],
         }, queue='tasks')
@@ -83,12 +83,11 @@ def send_task_periodic(task):
         log(f"[scheduler-{SCHEDULER_ID}] ERRO ao enviar tarefa: {e}")
     finally:
         interval = task['interval_seconds']
-        tid = task['task_id']
+        tid = task['task_uuid']
         timer = threading.Timer(interval, send_task_periodic, args=(task,))
         timer.daemon = True
         timer.start()
         active_tasks[tid] = timer  # Armazena o timer ativo para essa tarefa
-
 
 def start_scheduler():
     try:
@@ -96,7 +95,7 @@ def start_scheduler():
     except Exception as e:
         log(f"[scheduler-{SCHEDULER_ID}] ERRO ao buscar tarefas: {e}")
         return
-    my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
+    my_tasks = [t for t in tasks if is_task_owned(t['task_uuid'])]
     log(f"[scheduler-{SCHEDULER_ID}] TOTAL_SCHEDULERS atual: {TOTAL_SCHEDULERS}")
     log(f"[scheduler-{SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
 
@@ -104,8 +103,25 @@ def start_scheduler():
     for task in my_tasks:
         send_task_periodic(task)
 
+def on_new_task_message(ch, method, properties, body):
+    import json
+    task = json.loads(body)
+    tid = task['task_uuid']
+    if is_task_owned(tid):
+        log(f"[scheduler-{SCHEDULER_ID}] Recebeu tarefa nova {tid} — é minha, agendando...")
+        add_new_tasks([task]) # dicionário de uma tarefa
+    else:
+        log(f"[scheduler-{SCHEDULER_ID}] Recebeu tarefa nova {tid} — não é minha, ignorando.")
+
+def listen_for_new_tasks():
+    start_consumer(
+        callback=on_new_task_message,
+        queue='new_task'
+    )
+
 if __name__ == "__main__":
     update_scheduler_count()
+    threading.Thread(target=listen_for_new_tasks, daemon=True).start()
     threading.Timer(1, start_scheduler).start() 
     # Mantém o programa vivo para os timers funcionarem
     threading.Event().wait()
