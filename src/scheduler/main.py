@@ -34,6 +34,25 @@ def get_hash(value: str) -> int:
 def is_task_owned(task_id: str) -> bool:
     return (get_hash(task_id) % TOTAL_SCHEDULERS) == SCHEDULER_ID
 
+def clear_unowned_tasks(new_tasks):
+    new_ids = {t['task_id'] for t in new_tasks}
+    old_ids = set(active_tasks.keys())
+
+    to_remove = old_ids - new_ids
+    for tid in to_remove:
+        timer = active_tasks.pop(tid, None)
+        if timer:
+            timer.cancel()
+            log(f"[scheduler-{SCHEDULER_ID}] Cancelada tarefa {tid} (não pertence mais a este scheduler)")
+
+def add_new_tasks(new_tasks):
+    for task in new_tasks:
+        tid = task['task_id']
+        if tid not in active_tasks:
+            log(f"[scheduler-{SCHEDULER_ID}] Nova tarefa agendada: {tid}")
+            send_task_periodic(task)
+
+
 def send_task_periodic(task):
     try:
         log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
