@@ -16,23 +16,15 @@ TOTAL_SCHEDULERS = int(os.environ.get("TOTAL_SCHEDULERS", "2"))  # Via env no YA
 
 active_tasks = {} # esse dicionário é usado para armazenar as tarefas ativas, para poder gerenciar o envio periódico
 
-def update_scheduler_count():
-    global TOTAL_SCHEDULERS
-    try:
-        new_total = get_total_schedulers()
-        if new_total != TOTAL_SCHEDULERS:
-            log(f"[{hostname}] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} → {new_total}")
-            TOTAL_SCHEDULERS = new_total
-    except Exception as e:
-        log(f"[{hostname}] Erro ao consultar schedulers ativos: {e}")
-    finally:
-        threading.Timer(30, update_scheduler_count).start()
 
-def get_hash(value: str) -> int:
-    return int(hashlib.sha256(value.encode()).hexdigest(), 16)
+def sync_tasks():
+    tasks = get_all_tasks()
+    my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
 
-def is_task_owned(task_id: str) -> bool:
-    return (get_hash(task_id) % TOTAL_SCHEDULERS) == SCHEDULER_ID
+    clear_unowned_tasks(my_tasks)
+    add_new_tasks(my_tasks)
+
+    log(f"[scheduler-{SCHEDULER_ID}] Agora gerenciando {len(my_tasks)} tarefas")
 
 def clear_unowned_tasks(new_tasks):
     new_ids = {t['task_id'] for t in new_tasks}
@@ -51,9 +43,33 @@ def add_new_tasks(new_tasks):
         if tid not in active_tasks:
             log(f"[scheduler-{SCHEDULER_ID}] Nova tarefa agendada: {tid}")
             send_task_periodic(task)
+            
+def update_scheduler_count():
+    global TOTAL_SCHEDULERS
+    try:
+        new_total = get_total_schedulers()
+        if new_total != TOTAL_SCHEDULERS:
+            log(f"[{hostname}] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} → {new_total}")
+            TOTAL_SCHEDULERS = new_total
+            sync_tasks()
+    except Exception as e:
+        log(f"[{hostname}] Erro ao consultar schedulers ativos: {e}")
+    finally:
+        threading.Timer(30, update_scheduler_count).start()
 
+def get_hash(value: str) -> int:
+    return int(hashlib.sha256(value.encode()).hexdigest(), 16)
+
+def is_task_owned(task_id: str) -> bool:
+    return (get_hash(task_id) % TOTAL_SCHEDULERS) == SCHEDULER_ID
 
 def send_task_periodic(task):
+    tid = task['task_id']
+    if not is_task_owned(tid):
+        log(f"[scheduler-{SCHEDULER_ID}] Ignorando envio da tarefa {tid} — ownership mudou.")
+        active_tasks.pop(tid, None)  # remove do dicionário
+        return
+
     try:
         log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, ID (uuid): {task['task_id']} (id (db)={task['id']})")
         send_message({
