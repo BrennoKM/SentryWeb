@@ -15,15 +15,23 @@ def insert_task(task_name, task_type, payload_json, interval_seconds):
     conn.close()
     return task_uuid
 
-def get_db_id_by_task_uuid(task_uuid): # busca o id do banco de dados pelo task_uuid (uuid)
-    conn, cur = get_cursor()
-    cur.execute("SELECT id FROM tasks WHERE task_uuid = %s", (task_uuid,))
-    result = cur.fetchone()
-    cur.close()
-    conn.close()
-    if result:
-        return result[0]
-    return None
+def get_db_id_by_task_uuid(task_uuid):
+    conn, cur = None, None
+    try:
+        conn, cur = get_cursor()
+        cur.execute("SELECT id FROM tasks WHERE task_uuid = %s", (str(task_uuid),))
+        result = cur.fetchone()
+        if result:
+            return result['id']
+        return None
+    except Exception as e:
+        print(f"[ERRO] get_db_id_by_task_uuid para UUID {task_uuid}: {e}")
+        return None
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
 
 def get_all_tasks():
     conn, cur = get_cursor()

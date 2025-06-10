@@ -9,7 +9,7 @@ def process_task(task):
     # log("[worker]    Executando tarefa")
     # log(f"[worker]    Nome: {task['task_name']}")
     # log(f"[worker]    Tipo: {task['task_type']}")
-    # log(f"[worker]    ID (uuid): {task['task_id']}")
+    # log(f"[worker]    ID (uuid): {task['task_uuid']}")
     # log(f"[worker]    ID (db): {task['id']}")
     # log(f"[worker]    Payload: {task['payload']}")
     # log(f"[worker]    Resultado: {result}")
@@ -22,7 +22,7 @@ def process_task(task):
         f"\tID (db): {task['id']}\n"
         f"\tPayload: {task['payload']}\n"
         f"\tResultado: {result}\n"
-        "\tFinalizou tarefa: {task['task_name']}\n"
+        "\tFinalizou tarefa.\n"
     )
 
 def callback(ch, method, properties, body):
@@ -33,4 +33,5 @@ def callback(ch, method, properties, body):
         log(f"[worker] Erro ao processar tarefa: {e}")
 
 if __name__ == "__main__":
-    start_consumer(callback, queue='tasks')
+    log("[worker] Iniciando o worker...")
+    start_consumer(callback, queue='tasks', durable=True)

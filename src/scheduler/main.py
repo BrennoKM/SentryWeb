@@ -116,7 +116,9 @@ def on_new_task_message(ch, method, properties, body):
 def listen_for_new_tasks():
     start_consumer(
         callback=on_new_task_message,
-        queue='new_task'
+        exchange='new_task_exchange',
+        exchange_type='fanout',
+        exclusive=True
     )
 
 if __name__ == "__main__":

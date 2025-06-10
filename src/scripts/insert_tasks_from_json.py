@@ -17,7 +17,7 @@ def send_to_schedulers(task):
         'task_uuid': task['task_uuid'],
         'id': task['id']
     }
-    send_message(message, queue='new_task')
+    send_message(message, exchange='new_task_exchange', routing_key='')
 
 def insert_tasks(tasks):
     inserted_ids = []
@@ -31,22 +31,19 @@ def insert_tasks(tasks):
             )
             task['task_uuid'] = task_uuid  # Adiciona o UUID gerado à tarefa
             try:
+                log(f"🔄 Recuperando ID do banco para o task_uuid {task_uuid}...")
                 db_id = get_db_id_by_task_uuid(task_uuid)
             except Exception as e:
-                print(f"❌ Erro ao recuperar ID do banco para o task_uuid {task_uuid}: {str(e)}")
+                log(f"❌ Erro ao recuperar ID do banco para o task_uuid {task_uuid}: {str(e)}")
                 db_id = None
-            if db_id is None:
-                log(f"⚠️  Não foi possível recuperar o ID do banco para o task_id {task_uuid}")
-                task['id'] = None
-            else:
-                task['id'] = db_id
+            task['id'] = db_id
             try:
                 send_to_schedulers(task)
             except Exception as e:
                 log(f"❌ Erro ao enviar tarefa '{task['task_name']}' para os schedulers: {str(e)}")
                 continue
             inserted_ids.append(task_uuid)
-            print(f"✅ Tarefa '{task['task_name']}' inserida com id {task_uuid} (ID banco: {db_id})")
+            log(f"✅ Tarefa '{task['task_name']}' inserida com id {task_uuid} (ID banco: {db_id})")
         except Exception as e:
             print(f"❌ Erro ao inserir tarefa '{task['task_name']}': {str(e)}")
     return inserted_ids

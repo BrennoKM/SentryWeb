@@ -28,4 +28,5 @@ def get_total_schedulers():
         p for p in pods.items
         if p.status.phase == "Running"
     ]
-    return len(running_pods)
+    TOTAL_SCHEDULERS = len(running_pods)
+    return TOTAL_SCHEDULERS if TOTAL_SCHEDULERS > 0 else 1  # Garante que sempre tenha pelo menos 1 scheduler ativo

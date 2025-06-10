@@ -1,8 +1,9 @@
 import pika
 import json
 from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
+from utils.log import log
 
-def start_consumer(callback, queue='tasks', exchange=None, exchange_type='direct', exclusive=False):
+def start_consumer(callback, queue=None, exchange='', exchange_type='direct', routing_key='', exclusive=False, durable=True):
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(
             host=RABBITMQ_HOST,
@@ -12,12 +13,13 @@ def start_consumer(callback, queue='tasks', exchange=None, exchange_type='direct
     channel = connection.channel()
 
     if exchange:
-        channel.exchange_declare(exchange=exchange, exchange_type=exchange_type)
-        result = channel.queue_declare(queue='', exclusive=exclusive) if exclusive else channel.queue_declare(queue=queue, durable=True)
+        channel.exchange_declare(exchange=exchange, exchange_type=exchange_type, durable=durable)
+        result = channel.queue_declare(queue='', exclusive=exclusive) if exclusive else channel.queue_declare(queue=queue, durable=durable)
         queue_name = result.method.queue
-        channel.queue_bind(exchange=exchange, queue=queue_name)
+        channel.queue_bind(exchange=exchange, queue=queue_name, routing_key=routing_key)
     else:
-        channel.queue_declare(queue=queue, durable=True)
+        assert queue, "Se não usar exchange, é obrigatório informar a 'queue'"
+        channel.queue_declare(queue=queue, durable=durable)
         queue_name = queue
 
     def on_message(ch, method, properties, body):
@@ -25,10 +27,10 @@ def start_consumer(callback, queue='tasks', exchange=None, exchange_type='direct
             callback(ch, method, properties, body)
             ch.basic_ack(delivery_tag=method.delivery_tag)
         except Exception as e:
-            print(f"[consumer] Erro ao processar mensagem: {e}")
+            log(f"[consumer] Erro ao processar mensagem: {e}")
             ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue=queue_name, on_message_callback=on_message)
-    print(f"[*] Aguardando mensagens na fila '{queue_name}'.")
+    log(f"[*] Aguardando mensagens na fila '{queue_name}'...")
     channel.start_consuming()
