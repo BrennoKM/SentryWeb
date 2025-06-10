@@ -18,7 +18,7 @@ def process_task(task):
         "[worker]    ==================================== Tarefa Recebida ====================================\n"
         f"\tNome: {task['task_name']}\n"
         f"\tTipo: {task['task_type']}\n"
-        f"\tID (uuid): {task['task_id']}\n"
+        f"\tID (uuid): {task['task_uuid']}\n"
         f"\tID (db): {task['id']}\n"
         f"\tPayload: {task['payload']}\n"
         f"\tResultado: {result}\n"
