@@ -91,7 +91,11 @@ def send_task_periodic(task):
 
 
 def start_scheduler():
-    tasks = get_all_tasks()
+    try:
+        tasks = get_all_tasks()
+    except Exception as e:
+        log(f"[scheduler-{SCHEDULER_ID}] ERRO ao buscar tarefas: {e}")
+        return
     my_tasks = [t for t in tasks if is_task_owned(t['task_id'])]
     log(f"[scheduler-{SCHEDULER_ID}] TOTAL_SCHEDULERS atual: {TOTAL_SCHEDULERS}")
     log(f"[scheduler-{SCHEDULER_ID}] Gerenciando {len(my_tasks)} tarefas...")
