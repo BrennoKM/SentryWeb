@@ -2,7 +2,7 @@ import pika
 import json
 from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 
-def start_consumer(callback, queue='tasks'):
+def start_consumer(callback, queue='tasks', exchange=None, exchange_type='direct', exclusive=False):
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(
             host=RABBITMQ_HOST,
@@ -10,7 +10,15 @@ def start_consumer(callback, queue='tasks'):
         )
     )
     channel = connection.channel()
-    channel.queue_declare(queue=queue, durable=True)
+
+    if exchange:
+        channel.exchange_declare(exchange=exchange, exchange_type=exchange_type)
+        result = channel.queue_declare(queue='', exclusive=exclusive) if exclusive else channel.queue_declare(queue=queue, durable=True)
+        queue_name = result.method.queue
+        channel.queue_bind(exchange=exchange, queue=queue_name)
+    else:
+        channel.queue_declare(queue=queue, durable=True)
+        queue_name = queue
 
     def on_message(ch, method, properties, body):
         try:
@@ -21,6 +29,6 @@ def start_consumer(callback, queue='tasks'):
             ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
     channel.basic_qos(prefetch_count=1)
-    channel.basic_consume(queue=queue, on_message_callback=on_message)
-    print(f"[*] Aguardando mensagens na fila '{queue}'.")
+    channel.basic_consume(queue=queue_name, on_message_callback=on_message)
+    print(f"[*] Aguardando mensagens na fila '{queue_name}'.")
     channel.start_consuming()
