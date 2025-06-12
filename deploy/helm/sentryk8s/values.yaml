@@ -24,6 +24,25 @@ scheduler:
     minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 60
+    behavior:
+      scaleUp:
+        stabilizationWindowSeconds: 300    # espera 5 min para aumentar mais (suaviza picos)
+        policies:
+        - type: Percent
+          value: 50                        # pode aumentar no máximo 50% da quantidade atual de pods
+          periodSeconds: 60                # a cada 1 minuto
+        - type: Pods
+          value: 3                         # ou no máximo 3 pods de aumento em 1 min
+          periodSeconds: 60
+      scaleDown:
+        stabilizationWindowSeconds: 300    # espera 5 min para reduzir mais
+        policies:
+        - type: Percent
+          value: 20                        # pode reduzir no máximo 20% da quantidade atual de pods
+          periodSeconds: 60
+        - type: Pods
+          value: 1                         # ou no máximo 1 pod de redução em 1 min
+          periodSeconds: 60
 
 worker:
   image:
@@ -35,16 +54,35 @@ worker:
     port: 8001
   resources:
     requests:
-      cpu: 80m
+      cpu: 200m
       memory: 64Mi
     limits:
-      cpu: 200m
+      cpu: 300m
       memory: 128Mi
   hpa:
     enabled: true
     minReplicas: 3
     maxReplicas: 20
     targetCPUUtilizationPercentage: 60
+    behavior:
+      scaleUp:
+        stabilizationWindowSeconds: 300
+        policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+        - type: Pods
+          value: 3
+          periodSeconds: 60
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+        - type: Percent
+          value: 20
+          periodSeconds: 60
+        - type: Pods
+          value: 1
+          periodSeconds: 60
 
 rabbitmq:
   auth:

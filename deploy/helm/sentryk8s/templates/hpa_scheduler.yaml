@@ -18,4 +18,23 @@ spec:
       target:
         type: Utilization
         averageUtilization: {{ .Values.scheduler.hpa.targetCPUUtilizationPercentage }}
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: {{ .Values.scheduler.hpa.behavior.scaleUp.stabilizationWindowSeconds }}
+      policies:
+      - type: {{ (index .Values.scheduler.hpa.behavior.scaleUp.policies 0).type }}
+        value: {{ (index .Values.scheduler.hpa.behavior.scaleUp.policies 0).value }}
+        periodSeconds: {{ (index .Values.scheduler.hpa.behavior.scaleUp.policies 0).periodSeconds }}
+      - type: {{ (index .Values.scheduler.hpa.behavior.scaleUp.policies 1).type }}
+        value: {{ (index .Values.scheduler.hpa.behavior.scaleUp.policies 1).value }}
+        periodSeconds: {{ (index .Values.scheduler.hpa.behavior.scaleUp.policies 1).periodSeconds }}
+    scaleDown:
+      stabilizationWindowSeconds: {{ .Values.scheduler.hpa.behavior.scaleDown.stabilizationWindowSeconds }}
+      policies:
+      - type: {{ (index .Values.scheduler.hpa.behavior.scaleDown.policies 0).type }}
+        value: {{ (index .Values.scheduler.hpa.behavior.scaleDown.policies 0).value }}
+        periodSeconds: {{ (index .Values.scheduler.hpa.behavior.scaleDown.policies 0).periodSeconds }}
+      - type: {{ (index .Values.scheduler.hpa.behavior.scaleDown.policies 1).type }}
+        value: {{ (index .Values.scheduler.hpa.behavior.scaleDown.policies 1).value }}
+        periodSeconds: {{ (index .Values.scheduler.hpa.behavior.scaleDown.policies 1).periodSeconds }}
 {{- end }}
