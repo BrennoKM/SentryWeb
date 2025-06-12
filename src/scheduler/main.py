@@ -114,12 +114,17 @@ def on_new_task_message(ch, method, properties, body):
         log(f"[scheduler-{SCHEDULER_ID}] Recebeu tarefa nova {tid} — não é minha, ignorando.")
 
 def listen_for_new_tasks():
-    start_consumer(
-        callback=on_new_task_message,
-        exchange='new_task_exchange',
-        exchange_type='fanout',
-        exclusive=True
-    )
+    try:
+        start_consumer(
+            callback=on_new_task_message,
+            exchange='new_task_exchange',
+            exchange_type='fanout',
+            exclusive=True
+        )
+    except Exception as e:
+        log(f"[scheduler-{SCHEDULER_ID}] ERRO ao iniciar consumidor RabbitMQ: {e}")
+        log(f"[scheduler-{SCHEDULER_ID}] Tentando reconectar-se ao RabbitMQ em 5 segundos...")
+        threading.Timer(5, listen_for_new_tasks).start()
 
 if __name__ == "__main__":
     update_scheduler_count()

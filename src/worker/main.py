@@ -1,7 +1,9 @@
 import json
+import threading
 from messaging.consumer import start_consumer
 from worker.monitor.url_checker import check_url
 from utils.log import log
+
 
 def process_task(task):
     result = check_url(task['payload']['url'])
@@ -32,6 +34,18 @@ def callback(ch, method, properties, body):
     except Exception as e:
         log(f"[worker] Erro ao processar tarefa: {e}")
 
+def listen_for_tasks():
+    try:
+        start_consumer(
+            callback=callback, 
+            queue='tasks', 
+            durable=True
+        )
+    except Exception as e:
+        log(f"[worker] ERRO ao conectar RabbitMQ: {e}")
+        log("[worker] Tentando reconectar em 5 segundos...")
+        threading.Timer(5, listen_for_tasks).start()
+
 if __name__ == "__main__":
     log("[worker] Iniciando o worker...")
-    start_consumer(callback, queue='tasks', durable=True)
+    listen_for_tasks()
