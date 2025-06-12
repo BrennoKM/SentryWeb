@@ -41,9 +41,11 @@ def clear_unowned_tasks(new_tasks):
 def add_new_tasks(new_tasks):
     for task in new_tasks:
         tid = task['task_uuid']
-        if tid not in active_tasks:
-            log(f"[scheduler-{SCHEDULER_ID}] Nova tarefa agendada: {tid}")
-            send_task_periodic(task)
+        old_timer = active_tasks.get(tid)
+        if old_timer:
+            old_timer.cancel()
+        log(f"[scheduler-{SCHEDULER_ID}] Reagendando tarefa: {tid}")
+        send_task_periodic(task)
             
 def update_scheduler_count():
     global TOTAL_SCHEDULERS
@@ -68,7 +70,7 @@ def send_task_periodic(task):
     tid = task['task_uuid']
     if not is_task_owned(tid):
         log(f"[scheduler-{SCHEDULER_ID}] Ignorando envio da tarefa {tid} — ownership mudou.")
-        active_tasks.pop(tid, None)  # remove do dicionário
+        # active_tasks.pop(tid, None)  # remove do dicionário
         return
     try:
         log(f"[scheduler-{SCHEDULER_ID}] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, uuid: {task['task_uuid']} (id (db)={task['id']})")
@@ -129,6 +131,6 @@ def listen_for_new_tasks():
 if __name__ == "__main__":
     update_scheduler_count()
     threading.Thread(target=listen_for_new_tasks, daemon=True).start()
-    threading.Timer(1, start_scheduler).start() 
+    threading.Timer(30, start_scheduler).start() 
     # Mantém o programa vivo para os timers funcionarem
     threading.Event().wait()

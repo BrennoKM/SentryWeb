@@ -3,7 +3,6 @@ kind: StatefulSet
 metadata:
   name: scheduler
 spec:
-  replicas: {{ .Values.scheduler.replicaCount }}
   selector:
     matchLabels:
       app: scheduler

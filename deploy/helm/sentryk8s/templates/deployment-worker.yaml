@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: worker
 spec:
-  replicas: {{ .Values.worker.replicaCount }}
   selector:
     matchLabels:
       app: worker
