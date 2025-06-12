@@ -1,0 +1,21 @@
+{{- if .Values.scheduler.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: scheduler
+  namespace: {{ .Values.global.namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: scheduler
+  minReplicas: {{ .Values.scheduler.hpa.minReplicas }}
+  maxReplicas: {{ .Values.scheduler.hpa.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.scheduler.hpa.targetCPUUtilizationPercentage }}
+{{- end }}

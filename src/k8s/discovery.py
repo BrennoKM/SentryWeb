@@ -24,9 +24,18 @@ def get_total_schedulers():
 
     pods = v1.list_namespaced_pod(namespace=namespace, label_selector=label_selector)
 
-    running_pods = [
-        p for p in pods.items
-        if p.status.phase == "Running"
-    ]
+    running_pods = []
+    for p in pods.items:
+        if p.status.phase != "Running":
+            continue
+        containers = p.status.container_statuses
+        if containers is None:
+            continue
+        crashed = False
+        for c in containers:
+            if c.state.waiting and c.state.waiting.reason == "CrashLoopBackOff":
+                crashed = True
+        if not crashed:
+            running_pods.append(p)
     TOTAL_SCHEDULERS = len(running_pods)
     return TOTAL_SCHEDULERS if TOTAL_SCHEDULERS > 0 else 1  # Garante que sempre tenha pelo menos 1 scheduler ativo

@@ -12,6 +12,18 @@ scheduler:
   replicaCount: 2
   service:
     port: 8000
+  resources:
+    requests:
+      cpu: 150m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 60
 
 worker:
   image:
@@ -21,6 +33,18 @@ worker:
   replicaCount: 3
   service:
     port: 8001
+  resources:
+    requests:
+      cpu: 80m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  hpa:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 20
+    targetCPUUtilizationPercentage: 60
 
 rabbitmq:
   auth:
