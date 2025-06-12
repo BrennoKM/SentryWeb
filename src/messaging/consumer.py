@@ -3,7 +3,7 @@ import json
 from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 from utils.log import log
 
-def start_consumer(callback, queue=None, exchange='', exchange_type='direct', routing_key='', exclusive=False, durable=True):
+def start_consumer(callback, queue=None, exchange='', exchange_type='direct', routing_key='', exclusive=False, durable=True, prefetch_count=1):
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(
             host=RABBITMQ_HOST,
@@ -30,7 +30,7 @@ def start_consumer(callback, queue=None, exchange='', exchange_type='direct', ro
             log(f"[consumer] Erro ao processar mensagem: {e}")
             ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
-    channel.basic_qos(prefetch_count=1)
+    channel.basic_qos(prefetch_count)
     channel.basic_consume(queue=queue_name, on_message_callback=on_message)
     log(f"[*] Aguardando mensagens na fila '{queue_name}'...")
     channel.start_consuming()

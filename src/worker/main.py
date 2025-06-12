@@ -1,9 +1,11 @@
 import json
 import threading
 from messaging.consumer import start_consumer
+from concurrent.futures import ThreadPoolExecutor
 from worker.monitor.url_checker import check_url
 from utils.log import log
 
+executor = ThreadPoolExecutor(max_workers=10)
 
 def process_task(task):
     result = check_url(task['payload']['url'])
@@ -30,7 +32,8 @@ def process_task(task):
 def callback(ch, method, properties, body):
     try:
         task = json.loads(body)
-        process_task(task)
+        executor.submit(process_task, task)
+        ch.basic_ack(delivery_tag=method.delivery_tag) 
     except Exception as e:
         log(f"[worker] Erro ao processar tarefa: {e}")
 
@@ -39,7 +42,8 @@ def listen_for_tasks():
         start_consumer(
             callback=callback, 
             queue='tasks', 
-            durable=True
+            durable=True,
+            prefatch_count=10
         )
     except Exception as e:
         log(f"[worker] ERRO ao conectar RabbitMQ: {e}")
