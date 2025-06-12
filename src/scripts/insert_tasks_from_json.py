@@ -31,7 +31,7 @@ def insert_tasks(tasks):
             )
             task['task_uuid'] = task_uuid  # Adiciona o UUID gerado à tarefa
             try:
-                log(f"🔄 Recuperando ID do banco para o task_uuid {task_uuid}...")
+                # log(f"🔄 Recuperando ID do banco para o task_uuid {task_uuid}...")
                 db_id = get_db_id_by_task_uuid(task_uuid)
             except Exception as e:
                 log(f"❌ Erro ao recuperar ID do banco para o task_uuid {task_uuid}: {str(e)}")
