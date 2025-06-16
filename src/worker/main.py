@@ -20,7 +20,7 @@ def process_task(task):
             "\tFinalizou tarefa.\n"
         )
     except Exception as e:
-        log(f"[worker] Erro ao processar tarefa: {e}")
+        log(f"[worker] [ERRO] Erro ao processar tarefa: {e}")
 
 def callback(ch, method, properties, body):
     global executor
@@ -28,17 +28,17 @@ def callback(ch, method, properties, body):
         task = json.loads(body)
 
         if executor is None:
-            log("[worker] Executor não está disponível!")
+            log("[worker] [INFO] Executor não está disponível!")
             return
 
         executor.submit(process_task, task)
 
     except Exception as e:
-        log(f"[worker] Erro ao agendar tarefa: {e}")
+        log(f"[worker] [ERRO] Erro ao agendar tarefa: {e}")
 
 def listen_for_tasks():
     global executor
-    log("[worker] Criando novo executor...")
+    log("[worker] [INFO] Criando novo executor...")
     executor = ThreadPoolExecutor(max_workers=1)
 
     start_consumer(
@@ -50,5 +50,5 @@ def listen_for_tasks():
     )
 
 if __name__ == "__main__":
-    log("[worker] Iniciando o worker...")
+    log("[worker] [INFO] Iniciando o worker...")
     listen_for_tasks()

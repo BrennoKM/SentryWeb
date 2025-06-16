@@ -4,7 +4,7 @@ import time
 from utils.log import log
 from config.envs import RABBITMQ_HOST, RABBITMQ_USER, RABBITMQ_PASSWORD
 
-def send_message(data, queue=None, exchange='', routing_key=None, durable=True, max_retries=5):
+def send_message(data, queue=None, exchange='', routing_key=None, durable=True, max_retries=5, hostname="producer"):
     # Aceitar routing_key vazio '' como válido para exchange do tipo fanout
     if not queue and not exchange:
         raise AssertionError("Deve informar 'queue' ou 'exchange'")
@@ -42,7 +42,7 @@ def send_message(data, queue=None, exchange='', routing_key=None, durable=True, 
             connection.close()
             return
         except Exception as e:
-            log(f"[producer] Erro ao enviar mensagem, dados: {data} (tentativa {attempt}): {e}")
+            log(f"[{hostname}] [ERRO] Erro ao enviar mensagem, (tentativa {attempt}): {e}, dados: {data}")
             if attempt == max_retries:
                 raise
             time.sleep(delay)
