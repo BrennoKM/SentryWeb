@@ -6,6 +6,7 @@ from messaging.producer import send_message
 from k8s.discovery import get_total_schedulers
 from messaging.consumer import start_consumer
 import os
+import time
 
 hostname = os.environ.get("HOSTNAME", "scheduler-0")
 try:
@@ -49,16 +50,16 @@ def add_new_tasks(new_tasks):
             
 def update_scheduler_count():
     global TOTAL_SCHEDULERS
-    try:
-        new_total = get_total_schedulers()
-        if new_total != TOTAL_SCHEDULERS:
-            log(f"[scheduler-{SCHEDULER_ID}] [INFO] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} → {new_total}")
-            TOTAL_SCHEDULERS = new_total
-            sync_tasks()
-    except Exception as e:
-        log(f"[{hostname}] [ERRO] Erro ao consultar schedulers ativos: {e}")
-    finally:
-        threading.Timer(30, update_scheduler_count).start()
+    while True:
+        try:
+            new_total = get_total_schedulers()
+            if new_total != TOTAL_SCHEDULERS:
+                log(f"[scheduler-{SCHEDULER_ID}] [INFO] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} → {new_total}")
+                TOTAL_SCHEDULERS = new_total
+                sync_tasks()
+        except Exception as e:
+            log(f"[{hostname}] [ERRO] Erro ao consultar schedulers ativos: {e}")
+        time.sleep(30)
 
 def get_hash(value: str) -> int:
     return int(hashlib.sha256(value.encode()).hexdigest(), 16)
@@ -90,7 +91,7 @@ def send_task_periodic(task):
         timer.daemon = True
         timer.start()
         active_tasks[tid] = timer  # Armazena o timer ativo para essa tarefa
-
+ 
 def start_scheduler():
     try:
         tasks = get_all_tasks()
@@ -129,7 +130,7 @@ def listen_for_new_tasks():
         threading.Timer(5, listen_for_new_tasks).start()
 
 if __name__ == "__main__":
-    update_scheduler_count()
+    threading.Thread(target=update_scheduler_count, daemon=True).start()
     threading.Thread(target=listen_for_new_tasks, daemon=True).start()
     threading.Timer(30, start_scheduler).start() 
     # Mantém o programa vivo para os timers funcionarem
