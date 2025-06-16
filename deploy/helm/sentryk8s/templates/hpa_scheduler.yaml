@@ -18,6 +18,12 @@ spec:
       target:
         type: Utilization
         averageUtilization: {{ .Values.scheduler.hpa.targetCPUUtilizationPercentage }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.scheduler.hpa.targetMemoryUtilizationPercentage }}
   behavior:
     scaleUp:
       stabilizationWindowSeconds: {{ .Values.scheduler.hpa.behavior.scaleUp.stabilizationWindowSeconds }}
