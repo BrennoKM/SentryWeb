@@ -39,14 +39,14 @@ def callback(ch, method, properties, body):
 def listen_for_tasks():
     global executor
     log("[worker] [INFO] Criando novo executor...")
-    executor = ThreadPoolExecutor(max_workers=5)
+    executor = ThreadPoolExecutor(max_workers=1)
 
     start_consumer(
         callback=callback,
         queue='tasks',
         durable=True,
         auto_ack=True,
-        prefetch_count=10
+        prefetch_count=1
     )
 
 if __name__ == "__main__":
