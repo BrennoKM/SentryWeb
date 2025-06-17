@@ -17,7 +17,11 @@ def send_to_schedulers(task):
         'task_uuid': task['task_uuid'],
         'id': task['id']
     }
-    send_message(message, exchange='new_task_exchange', routing_key='')
+    try:
+        send_message(message, exchange='new_task_exchange', routing_key='')
+    except Exception as e:
+        log(f"❌ Erro ao enviar tarefa '{task['task_name']}' para os schedulers: {str(e)}")
+        raise
 
 def insert_tasks(tasks):
     inserted_ids = []
