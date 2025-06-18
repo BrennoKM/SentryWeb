@@ -2,7 +2,7 @@ import requests
 
 def check_url(url):
     try:
-        response = requests.get(url, timeout=5)
-        return response.status_code == 200
-    except Exception as e:
+        with requests.get(url, timeout=5) as response:
+            return response.status_code == 200
+    except Exception:
         return False

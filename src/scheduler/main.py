@@ -113,6 +113,7 @@ def on_new_task_message(ch, method, properties, body):
     if is_task_owned(tid):
         log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu tarefa nova {tid} — é minha, agendando...")
         add_new_tasks([task]) # dicionário de uma tarefa
+        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando agora {len(active_tasks)} tarefas ativas.")
     else:
         log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu tarefa nova {tid} — não é minha, ignorando.")
 
