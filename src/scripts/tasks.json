@@ -16,7 +16,7 @@
                 "url": "https://airbnb.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_uber",
@@ -25,7 +25,7 @@
                 "url": "https://uber.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_lyft",
@@ -34,7 +34,7 @@
                 "url": "https://lyft.com",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_grubhub",
@@ -43,7 +43,7 @@
                 "url": "https://grubhub.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_postmates",
@@ -52,7 +52,7 @@
                 "url": "https://postmates.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_chess",
@@ -61,7 +61,7 @@
                 "url": "https://chess.com",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_leetcode",
@@ -70,7 +70,7 @@
                 "url": "https://leetcode.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_reddit",
@@ -79,7 +79,7 @@
                 "url": "https://reddit.com",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_doordash",
@@ -88,7 +88,7 @@
                 "url": "https://doordash.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_ubereats",
@@ -97,7 +97,7 @@
                 "url": "https://ubereats.com",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_nytimes",
@@ -106,7 +106,7 @@
                 "url": "https://nytimes.com",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_cnn",
@@ -124,7 +124,7 @@
                 "url": "https://bbc.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_theverge",
@@ -133,7 +133,7 @@
                 "url": "https://theverge.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_techcrunch",
@@ -142,7 +142,7 @@
                 "url": "https://techcrunch.com",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_wired",
@@ -151,7 +151,7 @@
                 "url": "https://wired.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_gizmodo",
@@ -160,7 +160,7 @@
                 "url": "https://gizmodo.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_mashable",
@@ -169,7 +169,7 @@
                 "url": "https://mashable.com",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_imdb",
@@ -178,7 +178,7 @@
                 "url": "https://imdb.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_rottentomatoes",
@@ -187,7 +187,7 @@
                 "url": "https://rottentomatoes.com",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_metacritic",
@@ -196,7 +196,7 @@
                 "url": "https://metacritic.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_espn",
@@ -205,7 +205,7 @@
                 "url": "https://espn.com",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_nba",
@@ -214,7 +214,7 @@
                 "url": "https://nba.com",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_nfl",
@@ -232,7 +232,7 @@
                 "url": "https://mlb.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_nhl",
@@ -241,7 +241,7 @@
                 "url": "https://nhl.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_fifa",
@@ -250,7 +250,7 @@
                 "url": "https://fifa.com",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_uefa",
@@ -259,7 +259,7 @@
                 "url": "https://uefa.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_stackexchange",
@@ -268,7 +268,7 @@
                 "url": "https://stackexchange.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_gitlab",
@@ -277,7 +277,7 @@
                 "url": "https://gitlab.com",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_bitbucket",
@@ -286,7 +286,7 @@
                 "url": "https://bitbucket.org",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_sourceforge",
@@ -295,7 +295,7 @@
                 "url": "https://sourceforge.net",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_codepen",
@@ -304,7 +304,7 @@
                 "url": "https://codepen.io",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_replit",
@@ -313,7 +313,7 @@
                 "url": "https://replit.com",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_glitch",
@@ -322,7 +322,7 @@
                 "url": "https://glitch.com",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_codesandbox",
@@ -340,7 +340,7 @@
                 "url": "https://stackblitz.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_pluralsight",
@@ -349,7 +349,7 @@
                 "url": "https://pluralsight.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_coursera",
@@ -358,7 +358,7 @@
                 "url": "https://coursera.org",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_bing",
@@ -367,7 +367,7 @@
                 "url": "https://bing.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_yahoo",
@@ -376,7 +376,7 @@
                 "url": "https://yahoo.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_duckduckgo",
@@ -385,7 +385,7 @@
                 "url": "https://duckduckgo.com",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_meta",
@@ -394,7 +394,7 @@
                 "url": "https://meta.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_snapchat",
@@ -403,7 +403,7 @@
                 "url": "https://snapchat.com",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_tiktok",
@@ -412,7 +412,7 @@
                 "url": "https://tiktok.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_pinterest",
@@ -421,7 +421,7 @@
                 "url": "https://pinterest.com",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_quora",
@@ -430,7 +430,7 @@
                 "url": "https://quora.com",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_medium",
@@ -448,7 +448,7 @@
                 "url": "https://trello.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_slack",
@@ -457,7 +457,7 @@
                 "url": "https://slack.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_zoom",
@@ -466,7 +466,7 @@
                 "url": "https://zoom.us",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_skype",
@@ -475,7 +475,7 @@
                 "url": "https://skype.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_discord",
@@ -484,7 +484,7 @@
                 "url": "https://discord.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_telegram",
@@ -493,7 +493,7 @@
                 "url": "https://telegram.org",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_whatsapp",
@@ -502,7 +502,7 @@
                 "url": "https://whatsapp.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_signal",
@@ -511,7 +511,7 @@
                 "url": "https://signal.org",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_wechat",
@@ -520,7 +520,7 @@
                 "url": "https://wechat.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_dropbox",
@@ -529,7 +529,7 @@
                 "url": "https://dropbox.com",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_box",
@@ -538,7 +538,7 @@
                 "url": "https://box.com",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_icloud",
@@ -556,7 +556,7 @@
                 "url": "https://onedrive.live.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_google_drive",
@@ -565,7 +565,7 @@
                 "url": "https://drive.google.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_gmail",
@@ -574,7 +574,7 @@
                 "url": "https://mail.google.com",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_yandex",
@@ -583,7 +583,7 @@
                 "url": "https://yandex.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_aliexpress",
@@ -592,7 +592,7 @@
                 "url": "https://aliexpress.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_ebay",
@@ -601,7 +601,7 @@
                 "url": "https://ebay.com",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_shopify",
@@ -610,7 +610,7 @@
                 "url": "https://shopify.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_paypal",
@@ -619,7 +619,7 @@
                 "url": "https://paypal.com",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_stripe",
@@ -628,7 +628,7 @@
                 "url": "https://stripe.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_notion",
@@ -637,7 +637,7 @@
                 "url": "https://notion.so",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_google",
@@ -646,7 +646,7 @@
                 "url": "https://google.com",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_github",
@@ -664,7 +664,7 @@
                 "url": "https://stackoverflow.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_microsoft",
@@ -673,7 +673,7 @@
                 "url": "https://microsoft.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_apple",
@@ -682,7 +682,7 @@
                 "url": "https://apple.com",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_amazon",
@@ -691,7 +691,7 @@
                 "url": "https://amazon.com",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_netflix",
@@ -700,7 +700,7 @@
                 "url": "https://netflix.com",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_twitter",
@@ -709,7 +709,7 @@
                 "url": "https://twitter.com",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_linkedin",
@@ -718,7 +718,7 @@
                 "url": "https://linkedin.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_youtube",
@@ -727,7 +727,7 @@
                 "url": "https://youtube.com",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_reddit",
@@ -736,7 +736,7 @@
                 "url": "https://reddit.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_instagram",
@@ -745,7 +745,7 @@
                 "url": "https://instagram.com",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_wikipedia",
@@ -754,7 +754,7 @@
                 "url": "https://wikipedia.org",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_cloudflare",
@@ -772,7 +772,7 @@
                 "url": "https://digitalocean.com",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_aws_status",
@@ -781,7 +781,7 @@
                 "url": "https://status.aws.amazon.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_azure_status",
@@ -790,7 +790,7 @@
                 "url": "https://status.azure.com",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         },
         {
             "task_name": "check_nginx",
@@ -799,7 +799,7 @@
                 "url": "https://nginx.org",
                 "method": "GET"
             },
-            "interval_seconds": 25
+            "interval_seconds": 5
         },
         {
             "task_name": "check_nodejs",
@@ -808,7 +808,7 @@
                 "url": "https://nodejs.org",
                 "method": "GET"
             },
-            "interval_seconds": 30
+            "interval_seconds": 5
         },
         {
             "task_name": "check_python",
@@ -817,7 +817,7 @@
                 "url": "https://python.org",
                 "method": "GET"
             },
-            "interval_seconds": 35
+            "interval_seconds": 5
         },
         {
             "task_name": "check_docker",
@@ -826,7 +826,7 @@
                 "url": "https://docker.com",
                 "method": "GET"
             },
-            "interval_seconds": 40
+            "interval_seconds": 5
         },
         {
             "task_name": "check_kubernetes",
@@ -835,7 +835,7 @@
                 "url": "https://kubernetes.io",
                 "method": "GET"
             },
-            "interval_seconds": 45
+            "interval_seconds": 5
         },
         {
             "task_name": "check_grafana",
@@ -844,7 +844,7 @@
                 "url": "https://grafana.com",
                 "method": "GET"
             },
-            "interval_seconds": 50
+            "interval_seconds": 5
         },
         {
             "task_name": "check_prometheus",
@@ -853,7 +853,7 @@
                 "url": "https://prometheus.io",
                 "method": "GET"
             },
-            "interval_seconds": 55
+            "interval_seconds": 5
         },
         {
             "task_name": "check_elastic",
@@ -862,7 +862,7 @@
                 "url": "https://elastic.co",
                 "method": "GET"
             },
-            "interval_seconds": 60
+            "interval_seconds": 5
         },
         {
             "task_name": "check_mongodb",
@@ -880,7 +880,7 @@
                 "url": "https://postgresql.org",
                 "method": "GET"
             },
-            "interval_seconds": 10
+            "interval_seconds": 5
         },
         {
             "task_name": "check_mysql",
@@ -889,7 +889,7 @@
                 "url": "https://mysql.com",
                 "method": "GET"
             },
-            "interval_seconds": 15
+            "interval_seconds": 5
         },
         {
             "task_name": "check_redis",
@@ -898,7 +898,7 @@
                 "url": "https://redis.io",
                 "method": "GET"
             },
-            "interval_seconds": 20
+            "interval_seconds": 5
         }
     ]
 }
