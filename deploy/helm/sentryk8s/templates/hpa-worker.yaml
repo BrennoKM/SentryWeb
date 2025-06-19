@@ -18,12 +18,14 @@ spec:
       target:
         type: Utilization
         averageUtilization: {{ .Values.worker.hpa.targetCPUUtilizationPercentage }}
+{{- if .Values.worker.hpa.targetMemoryEnabled }}
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
         averageUtilization: {{ .Values.worker.hpa.targetMemoryUtilizationPercentage }}
+{{- end }}
   behavior:
     scaleUp:
       stabilizationWindowSeconds: {{ .Values.worker.hpa.behavior.scaleUp.stabilizationWindowSeconds }}
