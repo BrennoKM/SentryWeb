@@ -23,7 +23,7 @@ spec:
       name: memory
       target:
         type: Utilization
-        averageUtilization: {{ .Values.scheduler.hpa.targetMemoryUtilizationPercentage }}
+        averageUtilization: {{ .Values.worker.hpa.targetMemoryUtilizationPercentage }}
   behavior:
     scaleUp:
       stabilizationWindowSeconds: {{ .Values.worker.hpa.behavior.scaleUp.stabilizationWindowSeconds }}

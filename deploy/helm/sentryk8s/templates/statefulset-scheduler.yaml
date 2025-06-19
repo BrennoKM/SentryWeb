@@ -45,6 +45,7 @@ spec:
             secretKeyRef:
               name: rabbitmq-secrets
               key: rabbitmq-password
+        {{- if .Values.scheduler.resources.enabled }}
         resources:
           requests:
             cpu: {{ .Values.scheduler.resources.requests.cpu }}
@@ -52,3 +53,4 @@ spec:
           limits:
             cpu: {{ .Values.scheduler.resources.limits.cpu }}
             memory: {{ .Values.scheduler.resources.limits.memory }}
+        {{- end }}
