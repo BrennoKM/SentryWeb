@@ -13,7 +13,7 @@ scheduler:
   service:
     port: 8000
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: 150m
       memory: 256Mi
@@ -21,7 +21,7 @@ scheduler:
       cpu: 300m
       memory: 512Mi
   hpa:
-    enabled: false
+    enabled: true
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
@@ -34,7 +34,7 @@ scheduler:
           value: 50                        # pode aumentar no máximo 50% da quantidade atual de pods
           periodSeconds: 60                # a cada 1 minuto
         - type: Pods
-          value: 3                         # ou no máximo 3 pods de aumento em 1 min
+          value: 2                         # ou no máximo 2 pods de aumento em 1 min
           periodSeconds: 60
       scaleDown:
         stabilizationWindowSeconds: 300    # espera 5 min para reduzir mais

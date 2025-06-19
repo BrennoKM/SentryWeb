@@ -38,6 +38,7 @@ def clear_unowned_tasks(new_tasks):
         if timer:
             timer.cancel()
             log(f"[scheduler-{SCHEDULER_ID}] [INFO] Cancelada tarefa {tid} (não pertence mais a este scheduler)")
+    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando agora {len(active_tasks)} tarefas ativas.")
 
 def add_new_tasks(new_tasks):
     for task in new_tasks:
@@ -70,7 +71,7 @@ def is_task_owned(task_uuid: str) -> bool:
 def send_task_periodic(task):
     tid = task['task_uuid']
     if not is_task_owned(tid):
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Ignorando envio da tarefa {tid} — ownership mudou.")
+        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Ignorando envio da tarefa {tid} — scheduler responsável mudou.")
         # active_tasks.pop(tid, None)  # remove do dicionário
         return
     try:
@@ -112,8 +113,8 @@ def on_new_task_message(ch, method, properties, body):
     tid = task['task_uuid']
     if is_task_owned(tid):
         log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu tarefa nova {tid} — é minha, agendando...")
-        add_new_tasks([task]) # dicionário de uma tarefa
         log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando agora {len(active_tasks)} tarefas ativas.")
+        add_new_tasks([task]) # dicionário de uma tarefa
     else:
         log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu tarefa nova {tid} — não é minha, ignorando.")
 

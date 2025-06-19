@@ -23,10 +23,13 @@ def send_to_schedulers(task):
         log(f"❌ Erro ao enviar tarefa '{task['task_name']}' para os schedulers: {str(e)}")
         raise
 
-def insert_tasks(tasks):
+def insert_tasks(tasks, interval_override=None):
     inserted_ids = []
     for task in tasks:
         try:
+            if interval_override is not None:
+                task['interval_seconds'] = interval_override
+
             task_uuid = insert_task(
                 task_name=task['task_name'],
                 task_type=task['task_type'],
@@ -35,7 +38,6 @@ def insert_tasks(tasks):
             )
             task['task_uuid'] = task_uuid  # Adiciona o UUID gerado à tarefa
             try:
-                # log(f"🔄 Recuperando ID do banco para o task_uuid {task_uuid}...")
                 db_id = get_db_id_by_task_uuid(task_uuid)
             except Exception as e:
                 log(f"❌ Erro ao recuperar ID do banco para o task_uuid {task_uuid}: {str(e)}")
@@ -53,14 +55,24 @@ def insert_tasks(tasks):
     return inserted_ids
 
 if __name__ == "__main__":
+    import sys
     json_file = "tasks.json"
-    
+    interval_override = None
+
+    if len(sys.argv) > 1:
+        try:
+            interval_override = int(sys.argv[1])
+            print(f"Substituindo todos os intervalos para {interval_override} segundos.")
+        except ValueError:
+            print("O argumento deve ser um número inteiro representando o intervalo em segundos.")
+            sys.exit(1)
+
     print(f"Carregando tarefas do arquivo {json_file}...")
     tasks = load_tasks_from_file(json_file)
-    
+
     if not tasks:
         print("Nenhuma tarefa encontrada no arquivo.")
     else:
         print(f"Encontradas {len(tasks)} tarefas. Iniciando inserção...")
-        inserted_ids = insert_tasks(tasks)
+        inserted_ids = insert_tasks(tasks, interval_override)
         print(f"\nConcluído! {len(inserted_ids)} tarefas inseridas com sucesso.")
