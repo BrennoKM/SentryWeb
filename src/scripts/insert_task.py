@@ -3,6 +3,7 @@ from db.tasks import get_db_id_by_task_uuid
 from utils.log import log
 from insert_tasks_from_json import send_to_schedulers
 import sys
+import json
 
 if __name__ == "__main__":
     interval_override = None
@@ -18,7 +19,7 @@ if __name__ == "__main__":
 
     task['task_name'] = "url_example"
     task['task_type'] = "url_checker"
-    task['payload_json'] = '{"url": "https://example.com", "method": "GET"}'
+    task['payload_json'] = json.dumps('{"url": "https://example.com", "method": "GET"}')
     if interval_override is not None:
         task['interval_seconds'] = interval_override
     else:

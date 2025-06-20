@@ -1,66 +1,26 @@
 import threading
 import hashlib
+import time
+import os
+import json
+import heapq
 from utils.log import log
 from db.tasks import get_all_tasks
 from messaging.producer import send_message
 from k8s.discovery import get_total_schedulers
 from messaging.consumer import start_consumer
-import os
-import time
 
 hostname = os.environ.get("HOSTNAME", "scheduler-0")
 try:
     SCHEDULER_ID = int(hostname.split('-')[-1])
 except Exception:
-    SCHEDULER_ID = 0  # fallback
+    SCHEDULER_ID = 0
 
-TOTAL_SCHEDULERS = int(os.environ.get("TOTAL_SCHEDULERS", "2"))  # Via env no YAML e depois é atualizado pelo discovery
+TOTAL_SCHEDULERS = int(os.environ.get("TOTAL_SCHEDULERS", "2"))
 
-active_tasks = {} # esse dicionário é usado para armazenar as tarefas ativas, para poder gerenciar o envio periódico
-
-
-def sync_tasks():
-    tasks = get_all_tasks()
-    my_tasks = [t for t in tasks if is_task_owned(t['task_uuid'])]
-
-    clear_unowned_tasks(my_tasks)
-    add_new_tasks(my_tasks)
-
-    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Agora gerenciando {len(my_tasks)} tarefas")
-
-def clear_unowned_tasks(new_tasks):
-    new_ids = {t['task_uuid'] for t in new_tasks}
-    old_ids = set(active_tasks.keys())
-
-    to_remove = old_ids - new_ids
-    for tid in to_remove:
-        timer = active_tasks.pop(tid, None)
-        if timer:
-            timer.cancel()
-            log(f"[scheduler-{SCHEDULER_ID}] [INFO] Cancelada tarefa {tid} (não pertence mais a este scheduler)")
-    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando agora {len(active_tasks)} tarefas ativas.")
-
-def add_new_tasks(new_tasks):
-    for task in new_tasks:
-        tid = task['task_uuid']
-        old_timer = active_tasks.get(tid)
-        if old_timer:
-            old_timer.cancel()
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Reagendando tarefa: {tid}")
-        send_task_periodic(task)
-            
-def update_scheduler_count():
-    global TOTAL_SCHEDULERS
-    while True:
-        try:
-            new_total = get_total_schedulers()
-            if new_total != TOTAL_SCHEDULERS:
-                log(f"[scheduler-{SCHEDULER_ID}] [INFO] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} → {new_total}")
-                TOTAL_SCHEDULERS = new_total
-                sync_tasks()
-        except Exception as e:
-            log(f"[{hostname}] [ERRO] Erro ao consultar schedulers ativos: {e}")
-        time.sleep(30)
+active_tasks = {}
+schedule_heap = []
+tasks_lock = threading.Lock()
 
 def get_hash(value: str) -> int:
     return int(hashlib.sha256(value.encode()).hexdigest(), 16)
@@ -68,14 +28,49 @@ def get_hash(value: str) -> int:
 def is_task_owned(task_uuid: str) -> bool:
     return (get_hash(task_uuid) % TOTAL_SCHEDULERS) == SCHEDULER_ID
 
-def send_task_periodic(task):
-    tid = task['task_uuid']
-    if not is_task_owned(tid):
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Ignorando envio da tarefa {tid} — scheduler responsável mudou.")
-        # active_tasks.pop(tid, None)  # remove do dicionário
-        return
+def sync_tasks():
+    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Iniciando sincronização completa de tarefas...")
     try:
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Enviando tarefa: Nome: {task['task_name']}, Tipo: {task['task_type']}, uuid: {task['task_uuid']} (id (db)={task['id']})")
+        all_tasks_from_db = get_all_tasks()
+        my_tasks = [t for t in all_tasks_from_db if is_task_owned(t['task_uuid'])]
+
+        with tasks_lock:
+            my_tasks_map = {t['task_uuid']: t for t in my_tasks}
+            current_task_ids = set(active_tasks.keys())
+            new_task_ids = set(my_tasks_map.keys())
+
+            to_remove = current_task_ids - new_task_ids
+            for tid in to_remove:
+                active_tasks.pop(tid, None)
+                log(f"[scheduler-{SCHEDULER_ID}] [INFO] Tarefa {tid} removida (não pertence mais a este scheduler).")
+            
+            for tid, task in my_tasks_map.items():
+                if tid not in current_task_ids:
+                    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Nova tarefa adicionada via sync: {tid}")
+                    _schedule_task(task, is_new=True)
+                else:
+                    if active_tasks[tid]['interval_seconds'] != task['interval_seconds']:
+                         log(f"[scheduler-{SCHEDULER_ID}] [INFO] Tarefa {tid} atualizada com novo intervalo.")
+                         _schedule_task(task, is_new=False)
+            
+            log(f"[scheduler-{SCHEDULER_ID}] [INFO] Sincronização concluída. Gerenciando agora {len(active_tasks)} tarefas.")
+
+    except Exception as e:
+        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Falha na sincronização de tarefas: {e}")
+
+def _schedule_task(task: dict, is_new: bool):
+    tid = task['task_uuid']
+    
+    active_tasks[tid] = task
+    
+    next_run_time = time.time()
+    
+    heapq.heappush(schedule_heap, (next_run_time, tid))
+    log(f"[scheduler-{SCHEDULER_ID}] [DEBUG] Tarefa {tid} agendada para execução em {task['interval_seconds']} segundos.")
+
+def send_task_message(task):
+    try:
+        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Enviando tarefa: Nome: {task['task_name']}, uuid: {task['task_uuid']}, id (db): {task['id']}")
         send_message({
             'task_name': task['task_name'],
             'id': task['id'],
@@ -84,56 +79,90 @@ def send_task_periodic(task):
             'payload': task['payload'],
         }, queue='tasks', hostname=f"scheduler-{SCHEDULER_ID}")
     except Exception as e:
-        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Erro ao enviar tarefa: {e}")
-    finally:
-        interval = task['interval_seconds']
-        tid = task['task_uuid']
-        timer = threading.Timer(interval, send_task_periodic, args=(task,))
-        timer.daemon = True
-        timer.start()
-        active_tasks[tid] = timer  # Armazena o timer ativo para essa tarefa
- 
-def start_scheduler():
-    try:
-        tasks = get_all_tasks()
-    except Exception as e:
-        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Erro ao buscar tarefas: {e}")
-        return
-    my_tasks = [t for t in tasks if is_task_owned(t['task_uuid'])]
-    log(f"[scheduler-{SCHEDULER_ID}] [INFO] TOTAL_SCHEDULERS atual: {TOTAL_SCHEDULERS}")
-    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando {len(my_tasks)} tarefas...")
+        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Erro ao enviar tarefa {task['task_uuid']}: {e}")
 
-    # Agenda disparo inicial imediato para cada tarefa
-    for task in my_tasks:
-        send_task_periodic(task)
+def scheduler_loop():
+    while True:
+        with tasks_lock:
+            if not schedule_heap:
+                time.sleep(1)
+                continue
 
+            next_run_time, task_uuid = schedule_heap[0]
+
+        sleep_duration = next_run_time - time.time()
+
+        if sleep_duration > 0:
+            time.sleep(sleep_duration)
+
+        with tasks_lock:
+            if not schedule_heap:
+                continue
+            
+            _, tid = heapq.heappop(schedule_heap)
+
+            if tid not in active_tasks or not is_task_owned(tid):
+                log(f"[scheduler-{SCHEDULER_ID}] [INFO] Ignorando tarefa obsoleta ou reatribuída: {tid}")
+                continue
+
+            task_to_run = active_tasks[tid]
+
+            send_task_message(task_to_run)
+            
+            interval = task_to_run['interval_seconds']
+            new_next_run_time = time.time() + interval
+            heapq.heappush(schedule_heap, (new_next_run_time, tid))
+            
 def on_new_task_message(ch, method, properties, body):
-    import json
-    task = json.loads(body)
-    tid = task['task_uuid']
-    if is_task_owned(tid):
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu tarefa nova {tid} — é minha, agendando...")
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando agora {len(active_tasks)} tarefas ativas.")
-        add_new_tasks([task]) # dicionário de uma tarefa
-    else:
-        log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu tarefa nova {tid} — não é minha, ignorando.")
+    try:
+        task = json.loads(body)
+        tid = task['task_uuid']
+        if is_task_owned(tid):
+            log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu nova tarefa {tid} via RabbitMQ — é minha, agendando...")
+            with tasks_lock:
+                _schedule_task(task, is_new=True)
+            log(f"[scheduler-{SCHEDULER_ID}] [INFO] Agora gerenciando {len(active_tasks)} tarefas ativas.")
+        else:
+            log(f"[scheduler-{SCHEDULER_ID}] [INFO] Recebeu nova tarefa {tid} — não é minha, ignorando.")
+    except Exception as e:
+        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Erro ao processar mensagem de nova tarefa: {e}")
+
 
 def listen_for_new_tasks():
-    try:
-        start_consumer(
-            callback=on_new_task_message,
-            exchange='new_task_exchange',
-            exchange_type='fanout',
-            exclusive=True
-        )
-    except Exception as e:
-        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Erro ao iniciar consumidor RabbitMQ: {e}")
-        log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Tentando reconectar-se ao RabbitMQ em 5 segundos...")
-        threading.Timer(5, listen_for_new_tasks).start()
+    while True:
+        try:
+            log(f"[scheduler-{SCHEDULER_ID}] [INFO] Conectando ao RabbitMQ para ouvir novas tarefas...")
+            start_consumer(
+                callback=on_new_task_message,
+                exchange='new_task_exchange',
+                exchange_type='fanout',
+                exclusive=True
+            )
+        except Exception as e:
+            log(f"[scheduler-{SCHEDULER_ID}] [ERRO] Erro no consumidor RabbitMQ: {e}. Tentando reconectar em 10s...")
+            time.sleep(10)
+
+
+def update_scheduler_count():
+    global TOTAL_SCHEDULERS
+    while True:
+        try:
+            new_total = get_total_schedulers()
+            if new_total != TOTAL_SCHEDULERS:
+                log(f"[scheduler-{SCHEDULER_ID}] [INFO] TOTAL_SCHEDULERS alterado: {TOTAL_SCHEDULERS} -> {new_total}")
+                log(f"[scheduler-{SCHEDULER_ID}] [INFO] Gerenciando agora {len(active_tasks)} tarefas ativas.")
+                TOTAL_SCHEDULERS = new_total
+                sync_tasks()
+        except Exception as e:
+            log(f"[{hostname}] [ERRO] Erro ao consultar schedulers ativos: {e}")
+        time.sleep(30)
+
 
 if __name__ == "__main__":
+    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Iniciando scheduler...")
     threading.Thread(target=update_scheduler_count, daemon=True).start()
     threading.Thread(target=listen_for_new_tasks, daemon=True).start()
-    threading.Timer(30, start_scheduler).start() 
-    # Mantém o programa vivo para os timers funcionarem
-    threading.Event().wait()
+    time.sleep(10)
+    sync_tasks()
+    log(f"[scheduler-{SCHEDULER_ID}] [INFO] Iniciando o loop de agendamento principal.")
+    scheduler_loop()
