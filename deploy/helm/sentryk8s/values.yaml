@@ -67,8 +67,13 @@ worker:
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
+    targetCPUEnabled: false
     targetMemoryUtilizationPercentage: 120
     targetMemoryEnabled: false
+    customMetric:
+      enabled: true
+      name: "rabbitmq_tasks_queue_messages"
+      targetAverageValue: "200"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
@@ -107,6 +112,7 @@ rabbitmq:
       secretKeyRef:
         name: rabbitmq-secrets
         key: rabbitmq-password
+  plugins: "rabbitmq_management rabbitmq_peer_discovery_k8s rabbitmq_prometheus"
   configuration: |-
     default_user = admin
     default_pass = ${RABBITMQ_PASSWORD}

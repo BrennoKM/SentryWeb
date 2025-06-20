@@ -3,7 +3,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: worker
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Release.Namespace | default .Values.global.namespace }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -12,37 +12,30 @@ spec:
   minReplicas: {{ .Values.worker.hpa.minReplicas }}
   maxReplicas: {{ .Values.worker.hpa.maxReplicas }}
   metrics:
+  {{- if .Values.worker.hpa.customMetric.enabled }}
+  - type: Pods
+    pods:
+      metric:
+        name: {{ .Values.worker.hpa.customMetric.name }}
+      target:
+        type: AverageValue
+        averageValue: {{ .Values.worker.hpa.customMetric.targetAverageValue | quote }}
+  {{- end }}
+  {{- if .Values.worker.hpa.targetCPUEnabled }}
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
         averageUtilization: {{ .Values.worker.hpa.targetCPUUtilizationPercentage }}
-{{- if .Values.worker.hpa.targetMemoryEnabled }}
+  {{- end }}
+  {{- if .Values.worker.hpa.targetMemoryEnabled }}
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
         averageUtilization: {{ .Values.worker.hpa.targetMemoryUtilizationPercentage }}
-{{- end }}
-  behavior:
-    scaleUp:
-      stabilizationWindowSeconds: {{ .Values.worker.hpa.behavior.scaleUp.stabilizationWindowSeconds }}
-      policies:
-      - type: {{ (index .Values.worker.hpa.behavior.scaleUp.policies 0).type }}
-        value: {{ (index .Values.worker.hpa.behavior.scaleUp.policies 0).value }}
-        periodSeconds: {{ (index .Values.worker.hpa.behavior.scaleUp.policies 0).periodSeconds }}
-      - type: {{ (index .Values.worker.hpa.behavior.scaleUp.policies 1).type }}
-        value: {{ (index .Values.worker.hpa.behavior.scaleUp.policies 1).value }}
-        periodSeconds: {{ (index .Values.worker.hpa.behavior.scaleUp.policies 1).periodSeconds }}
-    scaleDown:
-      stabilizationWindowSeconds: {{ .Values.worker.hpa.behavior.scaleDown.stabilizationWindowSeconds }}
-      policies:
-      - type: {{ (index .Values.worker.hpa.behavior.scaleDown.policies 0).type }}
-        value: {{ (index .Values.worker.hpa.behavior.scaleDown.policies 0).value }}
-        periodSeconds: {{ (index .Values.worker.hpa.behavior.scaleDown.policies 0).periodSeconds }}
-      - type: {{ (index .Values.worker.hpa.behavior.scaleDown.policies 1).type }}
-        value: {{ (index .Values.worker.hpa.behavior.scaleDown.policies 1).value }}
-        periodSeconds: {{ (index .Values.worker.hpa.behavior.scaleDown.policies 1).periodSeconds }}
+  {{- end }}
+  behavior: {{ toYaml .Values.worker.hpa.behavior | nindent 4 }}
 {{- end }}
