@@ -9,9 +9,7 @@ stringData:
   type: helm
   name: prometheus-community
   url: https://prometheus-community.github.io/helm-charts
-
 ---
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -38,14 +36,19 @@ spec:
 
         prometheus:
           enabled: true
+          serviceAccount:
+            create: true
+            name: prometheus-serviceaccount
+          rbac:
+            create: true
           persistence:
             enabled: false
-          
           prometheusSpec:
-            additionalScrapeConfigs:
-              - job_name: 'rabbitmq-bypassing-helm'
-                static_configs:
-                  - targets: ['rabbitmq-exporter-svc.sentryk8s-dev.svc.cluster.local:9419']
+            serviceMonitorSelectorNilUsesHelmValues: false
+            serviceMonitorSelector:
+              matchLabels:
+                release: prometheus-stack
+            serviceMonitorNamespaceSelector: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -54,5 +57,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
-    - ServerSideApply=true
+      - CreateNamespace=true
+      - ServerSideApply=true
