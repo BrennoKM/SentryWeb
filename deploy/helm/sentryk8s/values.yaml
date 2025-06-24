@@ -122,17 +122,23 @@ rabbitmq:
     default_permissions.write = .*
   metrics:
     enabled: true
-    plugins: "rabbitmq_prometheus"
-    podAnnotations:
-      prometheus.io/scrape: "true"
-      prometheus.io/port: "{{ .Values.service.ports.metrics }}"
+    extraEnvVars:
+      - name: RABBITMQ_USER
+        valueFrom:
+          secretKeyRef:
+            name: rabbitmq-secrets
+            key: rabbitmq-username
+      - name: RABBITMQ_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: rabbitmq-secrets
+            key: rabbitmq-password
     serviceMonitor:
       enabled: true
-      namespace: sentryk8s-dev
+      namespace: monitoring
+      labels:
+        release: prometheus-stack
       interval: 30s
-    service:
-      ports:
-        metrics: 9419
   persistence:
     enabled: true
     size: 10Gi
