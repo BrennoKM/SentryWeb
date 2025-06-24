@@ -112,7 +112,7 @@ rabbitmq:
       secretKeyRef:
         name: rabbitmq-secrets
         key: rabbitmq-password
-  plugins: "rabbitmq_management rabbitmq_peer_discovery_k8s"
+  plugins: "rabbitmq_management rabbitmq_peer_discovery_k8s rabbitmq_prometheus"
   configuration: |-
     default_user = admin
     default_pass = ${RABBITMQ_PASSWORD}
@@ -120,6 +120,19 @@ rabbitmq:
     default_permissions.configure = .*
     default_permissions.read = .*
     default_permissions.write = .*
+  metrics:
+    enabled: true
+    plugins: "rabbitmq_prometheus"
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "{{ .Values.service.ports.metrics }}"
+    serviceMonitor:
+      enabled: true
+      namespace: sentryk8s-dev
+      interval: 30s
+    service:
+      ports:
+        metrics: 9419
   persistence:
     enabled: true
     size: 10Gi
