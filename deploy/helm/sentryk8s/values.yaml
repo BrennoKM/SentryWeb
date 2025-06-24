@@ -72,7 +72,7 @@ worker:
     targetMemoryEnabled: false
     customMetric:
       enabled: true
-      name: "rabbitmq_tasks_queue_messages"
+      name: "rabbitmq_queue_messages_ready"
       targetAverageValue: "200"
     behavior:
       scaleUp:
@@ -121,6 +121,7 @@ rabbitmq:
     default_permissions.read = .*
     default_permissions.write = .*
     prometheus.tcp.port = 9419
+    prometheus.return_per_object_metrics = true
   metrics:
     enabled: true
     serviceMonitor:
@@ -128,7 +129,7 @@ rabbitmq:
       namespace: monitoring
       labels:
         release: prometheus-stack
-      interval: 30s
+      interval: 5s
     rabbitmq:
       url: http://sentryk8s-dev-rabbitmq.sentryk8s-dev.svc.cluster.local:15672
       user: admin
