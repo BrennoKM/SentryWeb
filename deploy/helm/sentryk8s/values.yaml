@@ -120,6 +120,7 @@ rabbitmq:
     default_permissions.configure = .*
     default_permissions.read = .*
     default_permissions.write = .*
+    prometheus.tcp.port = 9419
   metrics:
     enabled: true
     serviceMonitor:
@@ -129,7 +130,7 @@ rabbitmq:
         release: prometheus-stack
       interval: 30s
     rabbitmq:
-      url: http://127.0.0.1:15672
+      url: http://sentryk8s-dev-rabbitmq.sentryk8s-dev.svc.cluster.local:15672
       user: admin
       password: "$(RABBITMQ_PASSWORD)"
     extraEnvVars:
