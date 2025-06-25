@@ -12,22 +12,27 @@ spec:
   minReplicas: {{ .Values.worker.hpa.minReplicas }}
   maxReplicas: {{ .Values.worker.hpa.maxReplicas }}
   metrics:
-  {{- if and .Values.worker.hpa.customMetricsEnabled .Values.worker.hpa.customMetrics }}
-  {{- range .Values.worker.hpa.customMetrics }}
-  - type: Pods
-    pods:
+  {{- if .Values.worker.hpa.objectMetrics }}
+  {{- range .Values.worker.hpa.objectMetrics }}
+  - type: Object
+    object:
+      describedObject:
+        apiVersion: {{ .describedObject.apiVersion }}
+        kind: {{ .describedObject.kind }}
+        name: {{ .describedObject.name }}
       metric:
-        name: {{ .name }}
-        {{- if .filterLabels }}
+        name: {{ .metric.name | quote }}
+        {{- if .metric.selector }}
         selector:
-          matchLabels:
-            {{- range $k, $v := .filterLabels }}
-            {{ $k }}: {{ $v | quote }}
-            {{- end }}
+          {{- toYaml .metric.selector | nindent 10 }}
         {{- end }}
       target:
-        type: AverageValue
-        averageValue: {{ .targetAverageValue | quote }}
+        type: {{ .target.type }}
+        {{- if eq .target.type "Value" }}
+        value: {{ .target.value | quote }}
+        {{- else if eq .target.type "AverageValue" }}
+        averageValue: {{ .target.averageValue | quote }}
+        {{- end }}
   {{- end }}
   {{- end }}
   {{- if .Values.worker.hpa.targetCPUEnabled }}

@@ -71,15 +71,16 @@ spec:
         rules:
           default: false
           custom:
-          - seriesQuery: 'rabbitmq_queue_messages_ready{queue="tasks",vhost="/"}'
-            resources:
-              overrides:
-                namespace: {resource: "namespace"}
-                pod: {resource: "pod"}
-                job: {resource: "job"}
-            name:
-              as: "rabbitmq_queue_messages"
-            metricsQuery: 'sum(rabbitmq_queue_messages_ready{queue="tasks",vhost="/"}) by (<<.GroupBy>>)'
+            - seriesQuery: 'rabbitmq_queue_messages_ready{queue!="", vhost!=""}'
+              resources:
+                overrides:
+                  namespace: {resource: "namespace"}
+                  vhost: {group: "rabbit.io", resource: "vhost"}
+                  queue: {group: "rabbit.io", resource: "queue"}
+              name:
+                matches: "rabbitmq_queue_messages_ready"
+                as: "rabbitmq_queue_messages_ready"
+              metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>}) by (namespace, queue, vhost)'
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

@@ -71,12 +71,20 @@ worker:
     targetMemoryUtilizationPercentage: 120
     targetMemoryEnabled: false
     customMetricsEnabled: true
-    customMetrics:
-      - name: "rabbitmq_queue_messages_ready"
-        filterLabels:
-          vhost: "/"
-          queue: "tasks"
-        targetAverageValue: "200"
+    objectMetrics:
+      - describedObject:
+          apiVersion: v1
+          kind: Namespace
+          name: "sentryk8s-dev"
+        metric:
+          name: "rabbitmq_queue_messages_ready"
+          selector:
+            matchLabels:
+              queue: "tasks"
+              vhost: "root"
+        target:
+          type: Value
+          value: "200"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
