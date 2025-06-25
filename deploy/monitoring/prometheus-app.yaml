@@ -37,6 +37,22 @@ spec:
               - job_name: 'rabbitmq-direct-scrape'
                 static_configs:
                   - targets: ['sentryk8s-dev-rabbitmq.sentryk8s-dev.svc.cluster.local:9419']
+        prometheus-adapter:
+          enabled: true
+          rules:
+            custom:
+            - seriesQuery: 'rabbitmq_queue_messages_ready{queue!=""}'
+              resources:
+                overrides:
+                  namespace: {resource: "namespace"}
+              name:
+                matches: "rabbitmq_queue_messages_ready"
+                as: "rabbitmq_queue_messages_ready"
+              metricsQuery: |-
+                label_replace(
+                  rabbitmq_queue_messages_ready{queue="{{.Series.Labels.queue}}", vhost="{{.Series.Labels.vhost}}"},
+                  "vhost", "root", "vhost", "/"
+                )
           
   destination:
     server: https://kubernetes.default.svc
