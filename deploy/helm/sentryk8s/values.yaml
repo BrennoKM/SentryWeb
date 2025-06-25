@@ -70,10 +70,13 @@ worker:
     targetCPUEnabled: false
     targetMemoryUtilizationPercentage: 120
     targetMemoryEnabled: false
-    customMetric:
-      enabled: true
-      name: "rabbitmq_queue_messages_ready"
-      targetAverageValue: "200"
+    customMetricsEnabled: true
+    customMetrics:
+      - name: "rabbitmq_queue_messages_ready"
+        filterLabels:
+          vhost: "/"
+          queue: "tasks"
+        targetAverageValue: "200"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
