@@ -15,7 +15,7 @@ stringData:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-minimal
+  name: prometheus-app
   namespace: argocd
 spec:
   project: default
@@ -37,22 +37,6 @@ spec:
               - job_name: 'rabbitmq-direct-scrape'
                 static_configs:
                   - targets: ['sentryk8s-dev-rabbitmq.sentryk8s-dev.svc.cluster.local:9419']
-        prometheus-adapter:
-          enabled: true
-          rules:
-            custom:
-            - seriesQuery: 'rabbitmq_queue_messages_ready{queue!=""}'
-              resources:
-                overrides:
-                  namespace: {resource: "namespace"}
-              name:
-                matches: "rabbitmq_queue_messages_ready"
-                as: "rabbitmq_queue_messages_ready"
-              metricsQuery: |-
-                label_replace(
-                  rabbitmq_queue_messages_ready{queue="{{.Series.Labels.queue}}", vhost="{{.Series.Labels.vhost}}"},
-                  "vhost", "root", "vhost", "/"
-                )
           
   destination:
     server: https://kubernetes.default.svc
@@ -64,3 +48,42 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-adapter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus-adapter
+    targetRevision: 4.0.0
+    helm:
+      values: |
+        prometheus:
+          url: http://prometheus-app-kube-promet-prometheus.monitoring.svc
+        rules:
+          default: false
+          custom:
+            - seriesQuery: 'rabbitmq_queue_messages_ready{queue!=""}'
+              name:
+                matches: "rabbitmq_queue_messages_ready"
+                as: "rabbitmq_queue_messages_ready"
+              metricsQuery: |
+                avg(rabbitmq_queue_messages_ready{<<.LabelMatchers>>}) by (queue, instance, vhost)
+
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
