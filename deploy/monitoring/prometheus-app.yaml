@@ -72,6 +72,9 @@ spec:
           default: false
           external:
             - seriesQuery: 'rabbitmq_queue_messages_ready{queue="tasks", vhost="/"}'
+              resources:
+                overrides:
+                  namespace: {resource: "namespace"}
               name:
                 matches: "rabbitmq_queue_messages_ready"
                 as: "rabbitmq_queue_messages_ready"
