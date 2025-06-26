@@ -9,4 +9,4 @@ COPY . .
 
 ENV PYTHONPATH=/app
 WORKDIR /app/scheduler
-CMD ["python", "main.py"]
+CMD ["python", "scheduler.py"]
