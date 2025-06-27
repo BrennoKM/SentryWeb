@@ -79,6 +79,14 @@ spec:
                 matches: "rabbitmq_queue_messages_ready"
                 as: "rabbitmq_queue_messages_ready"
               metricsQuery: 'sum(<<.Series>>)'
+            - seriesQuery: 'rabbitmq_queue_messages_unacked{queue="tasks", vhost="/"}'
+              resources:
+                overrides:
+                  namespace: {resource: "namespace"}
+              name:
+                matches: "rabbitmq_queue_messages_unacked"
+                as: "rabbitmq_queue_messages_unacked"
+              metricsQuery: 'sum(<<.Series>>)'
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

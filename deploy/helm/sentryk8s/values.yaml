@@ -76,6 +76,10 @@ worker:
         target:
           type: AverageValue 
           averageValue: "200"
+      - name: "rabbitmq_queue_messages_unacked"
+        target:
+          type: AverageValue 
+          averageValue: "35"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
