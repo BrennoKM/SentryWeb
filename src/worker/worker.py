@@ -1,7 +1,7 @@
 import json
 from concurrent.futures import ThreadPoolExecutor
 from messaging.consumer import start_consumer
-from worker.monitor.url_checker import check_url
+from monitor.url_checker import check_url
 from utils.log import log
 
 executor = None
