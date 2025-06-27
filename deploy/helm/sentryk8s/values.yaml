@@ -79,7 +79,7 @@ worker:
       - name: "rabbitmq_queue_messages_unacked"
         target:
           type: AverageValue 
-          averageValue: "35"
+          averageValue: "15"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
