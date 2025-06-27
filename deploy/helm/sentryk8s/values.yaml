@@ -91,14 +91,14 @@ worker:
           value: 2
           periodSeconds: 60
       scaleDown:
-        stabilizationWindowSeconds: 300
+        stabilizationWindowSeconds: 120
         policies:
         - type: Percent
           value: 20
-          periodSeconds: 120
+          periodSeconds: 60
         - type: Pods
           value: 1
-          periodSeconds: 120
+          periodSeconds: 60
 
 rabbitmq:
   auth:
