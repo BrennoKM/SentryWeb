@@ -63,7 +63,7 @@ worker:
       cpu: 1000m
       memory: 512Mi
   hpa:
-    enabled: true
+    enabled: false
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
@@ -88,7 +88,7 @@ worker:
           value: 50
           periodSeconds: 60
         - type: Pods
-          value: 2
+          value: 1
           periodSeconds: 60
       scaleDown:
         stabilizationWindowSeconds: 120
