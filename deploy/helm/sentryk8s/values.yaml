@@ -63,7 +63,7 @@ worker:
       cpu: 1000m
       memory: 512Mi
   hpa:
-    enabled: false
+    enabled: true
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
@@ -79,7 +79,7 @@ worker:
       - name: "rabbitmq_queue_messages_unacked"
         target:
           type: AverageValue 
-          averageValue: "15"
+          averageValue: "25"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
