@@ -24,11 +24,11 @@ scheduler:
     enabled: true
     minReplicas: 1
     maxReplicas: 10
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 70
     behavior:
       scaleUp:
-        stabilizationWindowSeconds: 300    # espera 5 min para aumentar mais (suaviza picos)
+        stabilizationWindowSeconds: 120    # espera 2 min para aumentar mais (suaviza picos)
         policies:
         - type: Percent
           value: 50                        # pode aumentar no máximo 50% da quantidade atual de pods
@@ -37,7 +37,7 @@ scheduler:
           value: 2                         # ou no máximo 2 pods de aumento em 1 min
           periodSeconds: 60
       scaleDown:
-        stabilizationWindowSeconds: 300    # espera 5 min para reduzir mais
+        stabilizationWindowSeconds: 120    # espera 2 min para reduzir mais
         policies:
         - type: Percent
           value: 20                        # pode reduzir no máximo 20% da quantidade atual de pods
@@ -66,9 +66,9 @@ worker:
     enabled: true
     minReplicas: 1
     maxReplicas: 10
-    targetCPUUtilizationPercentage: 80
+    targetCPUUtilizationPercentage: 70
     targetCPUEnabled: false
-    targetMemoryUtilizationPercentage: 120
+    targetMemoryUtilizationPercentage: 70
     targetMemoryEnabled: false
     externalMetricsEnabled: true
     externalMetrics:
@@ -79,7 +79,7 @@ worker:
       - name: "rabbitmq_queue_messages_unacked"
         target:
           type: AverageValue 
-          averageValue: "40"
+          averageValue: "35"
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60

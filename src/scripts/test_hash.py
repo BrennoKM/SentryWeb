@@ -5,7 +5,7 @@ from db.tasks import get_all_tasks
 from messaging.producer import send_message
 import uuid
 
-TOTAL_TASKS = 1000
+TOTAL_TASKS = 25000
 TOTAL_SCHEDULERS = 2
 SCHEDULER_ID = 1
 
