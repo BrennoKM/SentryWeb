@@ -70,7 +70,7 @@ worker:
     targetCPUEnabled: false
     targetMemoryUtilizationPercentage: 120
     targetMemoryEnabled: false
-    externalMetricsEnabled: true
+    externalMetricsEnabled: true # precisa do prometheus no cluster
     externalMetrics:
       - name: "rabbitmq_queue_messages_ready"
         target:
