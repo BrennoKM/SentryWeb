@@ -1,14 +1,18 @@
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor
 from messaging.consumer import start_consumer
-from worker.monitor.url_checker import check_url
+from monitor.url_checker import check_url
 from utils.log import log
 
 executor = None
 
 def process_task(task):
     try:
+        inicio = time.time()
         result = check_url(task['payload']['url'])
+        fim = time.time()
+        print()
         log(
             "[worker]    ==================================== Tarefa Recebida ====================================\n"
             f"\tNome: {task['task_name']}\n"
@@ -17,6 +21,7 @@ def process_task(task):
             f"\tID (db): {task['id']}\n"
             f"\tPayload: {task['payload']}\n"
             f"\tResultado: {result}\n"
+            f"\tTempo de execução: {fim - inicio:.2f} segundos\n"
             "\tFinalizou tarefa.\n"
         )
     except Exception as e:

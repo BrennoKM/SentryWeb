@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-endpoint
+  namespace: sentryk8s-dev 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-endpoint
+  template:
+    metadata:
+      labels:
+        app: test-endpoint
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25.3
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-endpoint-service
+  namespace: sentryk8s-dev
+spec:
+  selector:
+    app: test-endpoint
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
