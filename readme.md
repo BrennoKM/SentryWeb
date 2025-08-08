@@ -1,79 +1,79 @@
 # SentryK8s
 
-Sistema de monitoramento de serviços com mensagens automáticas via RabbitMQ, usando Kubernetes + Helm + CI/CD com GitHub Actions + ArgoCD.
+Um sistema distribuído, escalável e resiliente para agendamento e execução de tarefas, com foco no monitoramento da disponibilidade de serviços web. O projeto utiliza uma arquitetura de microsserviços orquestrada pelo Kubernetes e desacoplada pelo RabbitMQ.
+
+---
+
+## 🎯 Sobre o Projeto
+
+O SentryK8s foi desenvolvido para resolver o desafio de monitorar continuamente a saúde de múltiplos serviços em um ambiente distribuído. A plataforma é composta por dois microsserviços principais:
+
+* **Scheduler:** Um serviço *stateful* e distribuído, responsável por determinar *quais* e *quando* as tarefas devem ser executadas. Ele utiliza um algoritmo de particionamento (sharding) para garantir que não haja um ponto único de falha.
+* **Worker:** Um serviço *stateless* e concorrente, responsável pela execução real das tarefas. Ele foi projetado para escalar horizontalmente e processar um grande volume de verificações em paralelo.
+
+Um dos diferenciais do projeto é a sua **estratégia de autoescalonamento inteligente**. Através de experimentos, foi constatado que métricas de recursos tradicionais (como CPU) são ineficazes para este tipo de carga de trabalho. A solução implementada utiliza métricas de negócio customizadas, extraídas diretamente do RabbitMQ, permitindo que o sistema se adapte de forma precisa e eficiente à carga real de trabalho.
+
+---
+
+## ⚙️ Tecnologias Utilizadas
+
+* **Linguagem:** Python 3
+* **Orquestração:** Kubernetes (Minikube para desenvolvimento local)
+* **Mensageria:** RabbitMQ
+* **Banco de Dados:** PostgreSQL
+* **Empacotamento:** Helm
+* **CI/CD:** GitHub Actions (CI) e ArgoCD (GitOps para CD)
+* **Monitoramento:** Prometheus e Prometheus Adapter
+
+---
 
 ## 📁 Estrutura do Projeto
 
-.<br>
-├── deploy<br>
-│   ├── argocd<br>
-│   │   ├── cd.yaml<br>
-│   │   ├── image-updater-rbac.yaml<br>
-│   │   └── values.yaml<br>
-│   └── helm<br>
-│       └── sentryk8s<br>
-│           ├── Chart.lock<br>
-│           ├── charts<br>
-│           │   ├── postgresql-12.1.0.tgz<br>
-│           │   └── rabbitmq-12.0.0.tgz<br>
-│           ├── Chart.yaml<br>
-│           ├── templates<br>
-│           │   ├── deployment-worker.yaml<br>
-│           │   ├── _helpers.tpl<br>
-│           │   ├── _NOTES.txt<br>
-│           │   ├── service-scheduler.yaml<br>
-│           │   ├── service-worker.yaml<br>
-│           │   ├── statefulset-scheduler.yaml<br>
-│           │   └── tests<br>
-│           └── values.yaml<br>
-├── imagens<br>
-│   └── arquitetura.png<br>
-├── readme.md<br>
-└── src<br>
+A estrutura do repositório está organizada da seguinte forma:
 
-## 🚀 Como rodar com Helm (local com Minikube)
+```
+.
+├── deploy/              # Manifestos de deployment e configuração
+│   ├── argocd/          # Aplicações do ArgoCD
+│   └── helm/sentryk8s/  # Chart Helm principal da aplicação
+├── src/                 # Código-fonte da aplicação
+│   ├── scheduler/       # Código do microsserviço Scheduler
+│   └── worker/          # Código do microsserviço Worker
+└── .github/workflows/   # Pipeline de CI com GitHub Actions
+```
 
-helm install sentryk8s ./helm/sentryk8s
+---
 
-Para atualizar após mudanças:
+## 🚀 Como Rodar Localmente (com Minikube)
 
-helm upgrade sentryk8s ./helm/sentryk8s
+**Pré-requisitos:**
 
-## ⚙️ Tecnologias
+* Minikube
+* Helm
+* kubectl
 
-- Python 3
-- RabbitMQ
-- Kubernetes (Minikube)
-- Helm
-- GitHub Actions
-- ArgoCD (CD)
+**1. Inicie o Minikube:**
 
-## 📦 Estrutura da Aplicação (src/)
+```bash
+minikube start
+```
 
-./src<br>
-├── db<br>
-│   ├── database.py<br>
-│   └── tasks.py<br>
-├── messaging<br>
-│   ├── consumer.py<br>
-│   ├── emitter.py<br>
-│   ├── producer.py<br>
-├── rabbitmq<br>
-│   └── Dockerfile<br>
-├── scheduler<br>
-│   ├── Dockerfile<br>
-│   ├── main.py<br>
-│   └── requirements.txt<br>
-├── scripts<br>
-│   ├── insert_task.py<br>
-│   ├── resetdb.sql<br>
-│   └── test_hash.py<br>
-└── worker<br>
-    ├── Dockerfile<br>
-    ├── main.py<br>
-    ├── monitor<br>
-    └── requirements.txt<br>
+**2. Instale a Aplicação com Helm:**
 
-## 📌 Objetivo
+Navegue até a raiz do projeto e execute o comando de instalação. O Helm irá implantar o SentryK8s e suas dependências (PostgreSQL e RabbitMQ).
 
-Monitorar serviços essenciais (como APIs ou banco de dados) e emitir mensagens para uma fila RabbitMQ caso algo esteja errado. Isso permite a automação de alertas ou abertura de chamados.
+```bash
+helm install sentryk8s ./deploy/helm/sentryk8s
+```
+
+**3. Para atualizar após mudanças no código:**
+
+Para atualizar a implantação, basta usar o comando de upgrade do Helm:
+
+```bash
+helm upgrade sentryk8s ./deploy/helm/sentryk8s
+```
+
+**4. Fluxo CI/CD (opcional):**
+
+Para consilidar o fluxo CI/CD é necessário configurar os manifestos do ArgoCD com os repositórios corretos.

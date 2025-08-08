@@ -1,0 +1,804 @@
+{
+    "tasks": [
+        {
+            "task_name": "check_example",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://example.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_airbnb",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://airbnb.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_uber",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://uber.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_lyft",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://lyft.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_grubhub",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://grubhub.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_postmates",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://postmates.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_chess",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://chess.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_leetcode",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://leetcode.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_reddit",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://reddit.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_doordash",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://doordash.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_ubereats",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://ubereats.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_nytimes",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nytimes.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_cnn",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://cnn.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_bbc",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://bbc.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_theverge",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://theverge.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_techcrunch15",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://techcrunch.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_wired",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://wired.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_gizmodo",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://gizmodo.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_mashable",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mashable.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_imdb20",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://imdb.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_rottentomatoes",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://rottentomatoes.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_metacritic",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://metacritic.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_espn",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://espn.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_nba",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nba.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_nfl",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nfl.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_mlb",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mlb.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_nhl",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nhl.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_fifa",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://fifa.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_uefa",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://uefa.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_stackexchange",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://stackexchange.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_gitlab",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://gitlab.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_bitbucket",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://bitbucket.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_sourceforge",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://sourceforge.net"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_codepen",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://codepen.io"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_replit",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://replit.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_glitch",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://glitch.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_codesandbox",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://codesandbox.io"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_stackblitz",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://stackblitz.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_pluralsight",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://pluralsight.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_coursera",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://coursera.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_bing",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://bing.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_yahoo",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://yahoo.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_duckduckgo",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://duckduckgo.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_meta",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://meta.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_snapchat",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://snapchat.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_tiktok",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://tiktok.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_pinterest",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://pinterest.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_quora",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://quora.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_medium",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://medium.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_trello50",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://trello.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_slack",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://slack.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_zoom",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://zoom.us"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_skype",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://skype.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_discord",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://discord.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_telegram",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://telegram.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_whatsapp",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://whatsapp.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_signal",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://signal.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_wechat",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://wechat.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_dropbox",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://dropbox.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_box",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://box.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_icloud",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://icloud.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_onedrive",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://onedrive.live.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_google_drive",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://drive.google.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_gmail",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mail.google.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_yandex",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://yandex.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_aliexpress",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://aliexpress.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_ebay",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://ebay.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_shopify",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://shopify.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_paypal",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://paypal.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_stripe70",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://stripe.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_notion",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://notion.so"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_google",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://google.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_github",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://github.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_stackoverflow",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://stackoverflow.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_microsoft",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://microsoft.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_apple",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://apple.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_amazon",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://amazon.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_netflix",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://netflix.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_twitter",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://twitter.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_linkedin",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://linkedin.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_youtube",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://youtube.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_reddit",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://reddit.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_instagram",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://instagram.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_wikipedia",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://wikipedia.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_cloudflare",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://cloudflare.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_digitalocean",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://digitalocean.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_aws_status",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://status.aws.amazon.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_azure_status",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://status.azure.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_nginx",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nginx.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_nodejs",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://nodejs.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_python",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://python.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_docker",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://docker.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_kubernetes",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://kubernetes.io"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_grafana",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://grafana.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_prometheus",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://prometheus.io"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_elastic",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://elastic.co"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_mongodb",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mongodb.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_postgresql",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://postgresql.org"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_mysql",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://mysql.com"
+            },
+            "interval_seconds": 5
+        },
+        {
+            "task_name": "check_redis",
+            "task_type": "url_checker",
+            "payload": {
+                "url": "https://redis.io"
+            },
+            "interval_seconds": 5
+        }
+    ]
+}
